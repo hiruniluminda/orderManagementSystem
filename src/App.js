@@ -19,6 +19,8 @@ import PasswordUpdate from './components/passwordUpdate';
 import Nav from "./components/navbarcom";
 
 import Test from "./components/test";
+import CreateUser from './components/CreateUser';
+import ItemList from './components/ItemList';
 
 function App() {
   return (
@@ -33,6 +35,10 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPassword/>} />
         <Route path="/newCredential" element={<NewCredential/>} />
         <Route path="/passwordUpdate" element={<PasswordUpdate/>} />
+
+        <Route path="/order/user/create" element={<CreateUser />} />
+        <Route path="/itemList" element={<ItemList />} />
+
 
 
         <Route path='/' element={<Login />} />
