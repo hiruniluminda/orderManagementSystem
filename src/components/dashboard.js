@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavBarCom from './navbarcom';
 import { Col, Container, Row } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
@@ -12,101 +12,70 @@ import AddToHomeScreenIcon from '@mui/icons-material/AddToHomeScreen';
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
+import axios from "axios";
+import MyVerticallyCenteredModal from './show';
 
 function Dashboard() {
-    const rows = [ 
-        { id: 1, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 2, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 3, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 4, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 5, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 6, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 7, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 8, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 9, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 10, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 11, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 12, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
+    const [modalShow, setModalShow] = useState(false);
+    const [users, setUsers] = useState([]);
 
-    ];
-    const rows2 = [ 
-        { id: 1, desc: "balwik", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 2, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 3, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 4, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 5, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 6, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 7, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 8, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 9, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 10, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 11, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
-        { id: 12, desc: "John", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>}, 
+    useEffect(() => {
+        getUsers();
+    }, []);
 
-    ];
+    function getUsers() {
+        axios.get('http://localhost/api/order.php/')
+            .then(response => {
+                console.log(response.data);
+                setUsers(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    }
+    const deleteUser = (id) => {
+        axios.delete(`http://localhost/api/order.php/${id}/delete`).then(function(response){
+            console.log(response.data);
+            getUsers();
+        });
+    }
 
     const MyTable = () => (
-        <div style={{ maxHeight: "350px", overflowY: "auto" }}> 
+        <div style={{maxHeight: "350px", overflowY: "auto"}}> 
             
             <Table striped bordered hover> 
                 <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
-                    <tr> 
-                        <th className="table-header-bg">Invoice ID</th> 
-                        <th className="table-header-bg">Description</th> 
-                        <th className="table-header-bg">Amount(Rs.)</th>
-                        <th className="table-header-bg">Current Date</th>
-                        <th className="table-header-bg">Delivery Date</th>
-                        <th className="table-header-bg">More</th>
-                    </tr> 
-                </thead> 
-                <tbody> 
-                   
-                    {rows.map((row) => ( 
-                        <tr key={row.id}> 
-                            <td>{row.id}</td> 
-                            <td>{row.desc}</td> 
-                            <td>{row.amount}</td>
-                            <td>{row.curdate}</td> 
-                            <td>{row.deldate}</td> 
-                            <td>{row.more}</td> 
-                        </tr> 
-                    ))} 
-                </tbody> 
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>invoice_id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((user, key) =>
+                        <tr key={key}>
+                            <td>{user.id}</td>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                            <td>{user.mobile}</td>
+                            <td>{user.inv_id}</td>
+                            <td>
+                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
+                                <Link to={`/user/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
+                                <button onClick={() => deleteUser(user.id)}>Delete</button>
+
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+
             </Table> 
+            <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} inv_id={modalShow} />
+
         </div> 
     );
-
-    const MyTable2 = () => (
-        <div style={{ maxHeight: "350px", overflowY: "auto" }}> 
-            
-            <Table striped bordered hover> 
-                <thead style={{ position: "sticky", top: "0" }}> 
-                    <tr> 
-                        <th className="table-header-bg">Invoice ID</th> 
-                        <th className="table-header-bg">Description</th> 
-                        <th className="table-header-bg">Amount(Rs.)</th>
-                        <th className="table-header-bg">Current Date</th>
-                        <th className="table-header-bg">Delivery Date</th>
-                        <th className="table-header-bg">More</th>
-                    </tr> 
-                </thead> 
-                <tbody> 
-                   
-                    {rows2.map((row) => ( 
-                        <tr key={row.id}> 
-                            <td>{row.id}</td> 
-                            <td>{row.desc}</td> 
-                            <td>{row.amount}</td>
-                            <td>{row.curdate}</td> 
-                            <td>{row.deldate}</td> 
-                            <td>{row.more}</td> 
-                        </tr> 
-                    ))} 
-                </tbody> 
-            </Table> 
-        </div> 
-    );
-
     return (
         <>
             <NavBarCom />
@@ -139,7 +108,7 @@ function Dashboard() {
                         </Tab>
                        
                         {/*tab2 section */}
-                       
+                       {/*
                         <Tab eventKey="profile" title="Not Check Receive">
                         <div className='inv-dashing'>
                                 <MyTable2 />
@@ -151,7 +120,7 @@ function Dashboard() {
                                     <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
                                 </Col>
                             </Row>
-                        </Tab>
+                        </Tab>*/}
                     </Tabs>
                 </div>
             </div>

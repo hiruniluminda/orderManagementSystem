@@ -42,9 +42,56 @@ function Order() {
         });
     }
 
+    /**/
+    const [orders, setOrders] = useState([]);
+    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
+  
+    useEffect(() => {
+      fetchOrders();
+    }, []);
+  
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('http://localhost/api/order/transfer1.php');
+        const data = await response.json();
+        setOrders(data);
+      } catch (error) {
+        setError('Error occurred while fetching orders.');
+      }
+    };
+  
+    const handleAcceptOrder = async (orderId) => {
+      try {
+        const response = await fetch('http://localhost/api/order/transfer1.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            accept_button: 'true',
+            order_id: orderId,
+          }),
+        });
+        const data = await response.json();
+        if (data.error) {
+          setError(data.error);
+          setMessage('');
+        } else {
+          setMessage(data.message);
+          setError('');
+          fetchOrders(); // Refresh orders after accepting
+        }
+      } catch (error) {
+        setError('Error occurred while connecting to the server.');
+        setMessage('');
+      }
+    };
+
+    /* */
 
     const MyTable = () => (
-        <div style={{ maxHeight: "350px", overflowY: "auto" }}> 
+        <div style={{maxHeight: "350px", overflowY: "auto"}}> 
             
             <Table striped bordered hover> 
                 <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
@@ -66,8 +113,10 @@ function Order() {
                             <td>{user.inv_id}</td>
                             <td>
                                 <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
-                                <Link to={`user/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
+                                <Link to={`/user/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
                                 <button onClick={() => deleteUser(user.id)}>Delete</button>
+                                <button onClick={() => handleAcceptOrder(user.inv_id)}>Accept</button>
+
                             </td>
                         </tr>
                     )}

@@ -30,7 +30,7 @@ export default function ListUser() {
 
         axios.put(`http://localhost/api/user/${id}/edit`, inputs).then(function(response){
             console.log(response.data);
-            navigate('/');
+            navigate('/itemList');
         });
         
     }
