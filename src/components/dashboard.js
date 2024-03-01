@@ -18,9 +18,15 @@ import MyVerticallyCenteredModal from './show';
 function Dashboard() {
     const [modalShow, setModalShow] = useState(false);
     const [users, setUsers] = useState([]);
+    const [users1, setUsers1] = useState([]);
+
 
     useEffect(() => {
         getUsers();
+    }, []);
+
+    useEffect(() => {
+        getUsers1();
     }, []);
 
     function getUsers() {
@@ -39,6 +45,26 @@ function Dashboard() {
             getUsers();
         });
     }
+
+    function getUsers1() {
+        axios.get('http://localhost/api/notcheckToCheck/check_received_display.php/')
+            .then(response => {
+                console.log(response.data);
+                setUsers1(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    }
+    const deleteUser1 = (id) => {
+        axios.delete(`http://localhost/api/notcheckToCheck/check_received_display.php/${id}/delete`).then(function(response){
+            console.log(response.data);
+            getUsers();
+        });
+    };
+    
+    
+    
 
     const MyTable = () => (
         <div style={{maxHeight: "350px", overflowY: "auto"}}> 
@@ -76,6 +102,43 @@ function Dashboard() {
 
         </div> 
     );
+
+    const MyTable2 = () => (
+        <div style={{maxHeight: "350px", overflowY: "auto"}}> 
+            
+            <Table striped bordered hover> 
+                <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>invoice_id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users1.map((user, key) =>
+                        <tr key={key}>
+                            <td>{user.id}</td>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                            <td>{user.mobile}</td>
+                            <td>{user.inv_id}</td>
+                            <td>
+                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
+                                <Link to={`/user/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
+                                <button onClick={() => deleteUser1(user.id)}>Delete</button>
+
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+
+            </Table> 
+            <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} inv_id={modalShow} />
+
+        </div> 
+    );
     return (
         <>
             <NavBarCom />
@@ -96,7 +159,7 @@ function Dashboard() {
                     <Tabs variant="pills" defaultActiveKey="profile" className="mb-3" fill>
                         <Tab eventKey="home" title="Check Received">
                             <div className='inv-dashing'>
-                                <MyTable />
+                                <MyTable2 />
                             </div>
                             <Row className='inv-content2'>
                                 <Col xs={4}>Total : </Col>
@@ -108,10 +171,10 @@ function Dashboard() {
                         </Tab>
                        
                         {/*tab2 section */}
-                       {/*
+                       
                         <Tab eventKey="profile" title="Not Check Receive">
                         <div className='inv-dashing'>
-                                <MyTable2 />
+                                <MyTable />
                             </div>
                             <Row className='inv-content2'>
                                 <Col xs={4}>Total : </Col>
@@ -120,7 +183,7 @@ function Dashboard() {
                                     <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
                                 </Col>
                             </Row>
-                        </Tab>*/}
+                        </Tab>
                     </Tabs>
                 </div>
             </div>
