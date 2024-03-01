@@ -13,54 +13,10 @@ import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import Checkinputbox from './check_inputbox';
 
 function Check() {
-    const rows = [ 
-        { checkno: 1, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 2, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 3, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 4, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 5, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 6, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 7, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 8, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 9, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 10, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 11, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>},
-        { checkno: 12, desc: "John", amount: 30, duedate: "10/02/2024", more: <AddToHomeScreenIcon/>}, 
-         
-
-    ];
-
-    const MyTable = () => (
-        <div style={{ maxHeight: "350px", overflowY: "auto" }}> 
-            
-            <Table striped bordered hover> 
-                <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
-                    <tr> 
-                        <th className="table-header-bg">Check No</th> 
-                        <th className="table-header-bg">Description</th> 
-                        <th className="table-header-bg">Amount(Rs.)</th>
-                        <th className="table-header-bg">Due Date</th>
-                        <th className="table-header-bg">More</th>
-                    </tr> 
-                </thead> 
-                <tbody> 
-                   
-                    {rows.map((row) => ( 
-                        <tr key={row.checkno}> 
-                            <td>{row.desc}</td> 
-                            <td>{row.desc}</td> 
-                            <td>{row.amount}</td>
-                            <td>{row.duedate}</td>
-                            <td>{row.more}</td> 
-                        </tr> 
-                    ))} 
-                </tbody> 
-            </Table> 
-        </div> 
-    );
-
+    
     return (
         <>
             <NavBarCom />
@@ -81,7 +37,7 @@ function Check() {
                     <Tabs variant="pills" defaultActiveKey="home" className="mb-3" fill>
                         <Tab eventKey="home" title="Received Check List">
                             <div className='inv-dashing'>
-                                <MyTable />
+                                <Checkinputbox />
                             </div>
                             <Row className='inv-content2'>
                                 <Col xs={4}><Button className='printbtnx'><AddBoxIcon/>&nbsp;&nbsp;Add</Button></Col>
