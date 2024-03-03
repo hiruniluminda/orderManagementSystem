@@ -15,8 +15,7 @@ export default function ListUser() {
     }, []);
 
     function getUsers() {
-        axios.get('http://localhost/api/users/')
-            .then(response => {
+        axios.get('http://localhost/api/users/').then(response => {
                 console.log(response.data);
                 setUsers(response.data);
             })

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function App() {
+function ItemList() {
   const [products, setProducts] = useState([
     { name: 'Car', price: 0, quantity: 0, inv_id: 0 },
     { name: 'Bike', price: 0, quantity: 0, inv_id: 0 },
@@ -68,4 +68,4 @@ function App() {
   );
 }
 
-export default App;
+export default ItemList;

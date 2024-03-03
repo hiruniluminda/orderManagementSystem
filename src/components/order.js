@@ -16,7 +16,7 @@ import Table from 'react-bootstrap/Table';
 import axios from "axios";
 import MyVerticallyCenteredModal from './show';
 
-
+/*users and orders details input section */
 function Order() {
     const [modalShow, setModalShow] = useState(false);
     const [users, setUsers] = useState([]);
@@ -26,8 +26,7 @@ function Order() {
     }, []);
 
     function getUsers() {
-        axios.get('http://localhost/api/users/')
-            .then(response => {
+        axios.get('http://localhost/api/users/').then(response => {
                 console.log(response.data);
                 setUsers(response.data);
             })
@@ -42,7 +41,7 @@ function Order() {
         });
     }
 
-    /**/
+    /**//*
     const [orders, setOrders] = useState([]);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
@@ -59,7 +58,7 @@ function Order() {
       } catch (error) {
         setError('Error occurred while fetching orders.');
       }
-    };
+    };*/
   
     const handleAcceptOrder = async (orderId) => {
       try {
@@ -72,7 +71,8 @@ function Order() {
             accept_button: 'true',
             order_id: orderId,
           }),
-        });
+        });            getUsers();
+        /*
         const data = await response.json();
         if (data.error) {
           setError(data.error);
@@ -81,10 +81,8 @@ function Order() {
           setMessage(data.message);
           setError('');
           fetchOrders(); // Refresh orders after accepting
-        }
+        }*/
       } catch (error) {
-        setError('Error occurred while connecting to the server.');
-        setMessage('');
       }
     };
 

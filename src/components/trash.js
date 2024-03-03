@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavBarCom from './navbarcom';
 import { Col, Container, Row } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
@@ -14,25 +14,35 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import axios from 'axios';
+import MyVerticallyCenteredModal from './show';
 
 function Trash() {
-    const rows = [ 
-        { invoiceid: 1, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 2, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 3, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 4, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 5, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 6, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 7, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 8, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 9, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 10, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 11, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>},
-        { invoiceid: 12, dued: "10/02/2024", amount: 30, curdate: "10/02/2024",deldate: "11/02/2024",more: <AddToHomeScreenIcon/>, restore: <RestoreIcon/>}, 
-        
-         
+    const [modalShow, setModalShow] = useState(false);
+    const [users, setUsers] = useState([]);
 
-    ];
+
+    useEffect(() => {
+        getUsers();
+    }, []);
+
+    /* get users data from order.php file */
+    function getUsers() {
+        axios.get('http://localhost/api/trash/trash.php').then(response => {
+                console.log(response.data);
+                setUsers(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    }
+    /* delete users data from order.php file using id */
+    const deleteUser = (id) => {
+        axios.delete(`http://localhost/api/trash/trash.php/${id}/delete`).then(response =>{
+            console.log(response.data);
+            getUsers();
+        });
+    }
 
     const MyTable = () => (
         <div style={{ maxHeight: "350px", overflowY: "auto" }}> 
@@ -41,30 +51,35 @@ function Trash() {
                 <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
                     <tr> 
                         <th className="table-header-bg">Invoice ID</th> 
-                        <th className="table-header-bg">Due Date</th> 
-                        <th className="table-header-bg">Amount(Rs.)</th>
-                        <th className="table-header-bg">Current Date</th>
-                        <th className="table-header-bg">Delivery Date</th>
-                        <th className="table-header-bg">More</th>
-                        <th className="table-header-bg">Restore</th>
+                        <th className="table-header-bg">Name</th> 
+                        <th className="table-header-bg">Email</th>
+                        <th className="table-header-bg">Mobile</th>
+                        <th className="table-header-bg">Launch</th>
+                        <th className="table-header-bg">Edit</th>
+                        <th className="table-header-bg">Delete</th>
                         
                     </tr> 
                 </thead> 
                 <tbody> 
                    
-                    {rows.map((row) => ( 
+                    {users.map((row) => ( 
                         <tr key={row.id}> 
-                            <td>{row.invoiceid}</td> 
-                            <td>{row.dued}</td> 
-                            <td>{row.amount}</td>
-                            <td>{row.curdate}</td> 
-                            <td>{row.deldate}</td> 
-                            <td>{row.more}</td>
-                            <td>{row.restore}</td> 
+                            <td>{row.inv_id}</td> 
+                            <td>{row.name}</td> 
+                            <td>{row.email}</td>
+                            <td>{row.mobile}</td> 
+                            <td>
+                                <Button variant="primary" onClick={() => setModalShow(row.inv_id)}>Launch modal with grid</Button>
+                                <Link to={`/check_received/${row.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
+                                <button onClick={() => deleteUser(row.id)}>Delete</button>
+
+                            </td>
                         </tr> 
                     ))} 
                 </tbody> 
             </Table> 
+            <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} inv_id={modalShow} />
+
         </div> 
     );
 
