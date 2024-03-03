@@ -15,6 +15,7 @@ import Table from 'react-bootstrap/Table';
 import axios from "axios";
 import MyVerticallyCenteredModal from './show';
 
+/*dashboard section*/
 function Dashboard() {
     const [modalShow, setModalShow] = useState(false);
     const [users, setUsers] = useState([]);
@@ -29,9 +30,9 @@ function Dashboard() {
         getUsers1();
     }, []);
 
+    /* get users data from order.php file */
     function getUsers() {
-        axios.get('http://localhost/api/order.php/')
-            .then(response => {
+        axios.get('http://localhost/api/order.php/').then(response => {
                 console.log(response.data);
                 setUsers(response.data);
             })
@@ -39,16 +40,16 @@ function Dashboard() {
                 console.error('Error fetching users:', error);
             });
     }
+    /* delete users data from order.php file using id */
     const deleteUser = (id) => {
-        axios.delete(`http://localhost/api/order.php/${id}/delete`).then(function(response){
+        axios.delete(`http://localhost/api/order.php/${id}/delete`).then(response =>{
             console.log(response.data);
             getUsers();
         });
     }
-
+    /* get users data from check_received_display.php file */
     function getUsers1() {
-        axios.get('http://localhost/api/notcheckToCheck/check_received_display.php/')
-            .then(response => {
+        axios.get('http://localhost/api/notcheckToCheck/check_received_display.php/').then(response => {
                 console.log(response.data);
                 setUsers1(response.data);
             })
@@ -56,8 +57,9 @@ function Dashboard() {
                 console.error('Error fetching users:', error);
             });
     }
+    /* delete users data from check_received_display.php file using id */
     const deleteUser1 = (id) => {
-        axios.delete(`http://localhost/api/notcheckToCheck/check_received_display.php/${id}/delete`).then(function(response){
+        axios.delete(`http://localhost/api/notcheckToCheck/check_received_display.php/${id}/delete`).then(response =>{
             console.log(response.data);
             getUsers();
         });
@@ -65,7 +67,7 @@ function Dashboard() {
     
     
     
-
+/*create table and put data into the table in not_check_received section */
     const MyTable = () => (
         <div style={{maxHeight: "350px", overflowY: "auto"}}> 
             
@@ -89,7 +91,7 @@ function Dashboard() {
                             <td>{user.inv_id}</td>
                             <td>
                                 <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
-                                <Link to={`/user/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
+                                <Link to={`/check_received/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
                                 <button onClick={() => deleteUser(user.id)}>Delete</button>
 
                             </td>
@@ -103,6 +105,7 @@ function Dashboard() {
         </div> 
     );
 
+/*create table and put data into the table in check_received section */
     const MyTable2 = () => (
         <div style={{maxHeight: "350px", overflowY: "auto"}}> 
             
@@ -126,7 +129,7 @@ function Dashboard() {
                             <td>{user.inv_id}</td>
                             <td>
                                 <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
-                                <Link to={`/user/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
+                                <Link to={`/check_received/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
                                 <button onClick={() => deleteUser1(user.id)}>Delete</button>
 
                             </td>
@@ -156,10 +159,11 @@ function Dashboard() {
                 </div>
 
                 <div className="dashing-section">
+                        {/*tab1 section */}
                     <Tabs variant="pills" defaultActiveKey="profile" className="mb-3" fill>
                         <Tab eventKey="home" title="Check Received">
                             <div className='inv-dashing'>
-                                <MyTable2 />
+                                <MyTable2 />{/* call MyTable2 function */}
                             </div>
                             <Row className='inv-content2'>
                                 <Col xs={4}>Total : </Col>
@@ -171,10 +175,9 @@ function Dashboard() {
                         </Tab>
                        
                         {/*tab2 section */}
-                       
                         <Tab eventKey="profile" title="Not Check Receive">
                         <div className='inv-dashing'>
-                                <MyTable />
+                                <MyTable />{/* call MyTable function */}
                             </div>
                             <Row className='inv-content2'>
                                 <Col xs={4}>Total : </Col>

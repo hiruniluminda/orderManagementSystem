@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "./test.css"
 
@@ -15,4 +15,4 @@ function Test(){
         </div>
     );
 }
-export default Test;
+export default Test;*/

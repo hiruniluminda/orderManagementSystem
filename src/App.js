@@ -15,6 +15,7 @@ import Test from "./components/test";
 import CreateUser from './components/CreateUser';
 import ItemList from './components/ItemList';
 import EditUser from './components/EditUser';
+import EditNotCheck from './components/EditNotCheck';
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
         <Route path="/itemList" element={<ItemList />} />
         {/* Update the route for editing user */}
         <Route path="/user/:id/edit" element={<EditUser />} />
+        <Route path="/check_received/:id/edit" element={<EditNotCheck />} />
+
         {/* Use dynamic segment :id to capture the user ID */}
         <Route path='/' element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />

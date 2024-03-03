@@ -1,4 +1,4 @@
-// ParentComponent.js
+/* // ParentComponent.js
 import React, { useState } from 'react';
 import Order from './order';
 import Dashboard from './dashboard';
@@ -19,3 +19,4 @@ function ParentComponent() {
 }
 
 export default ParentComponent;
+ */

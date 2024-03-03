@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 /*edit user details in order section*/
-export default function ListUser() {
+export default function EditNotCheck() {
     const navigate = useNavigate();
 
     const [inputs, setInputs] = useState([]);
@@ -14,7 +14,7 @@ export default function ListUser() {
     }, []);
 
     function getUser() {
-        axios.get(`http://localhost/api/user/${id}`).then(function(response) {
+        axios.get(`http://localhost/api/notcheckToCheck/check_received_display.php/user/${id}`).then(function(response) {
             console.log(response.data);
             setInputs(response.data);
         });
@@ -28,7 +28,7 @@ export default function ListUser() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.put(`http://localhost/api/user/${id}/edit`, inputs).then(function(response){
+        axios.put(`http://localhost/api/notcheckToCheck/check_received_display.php/user/${id}/edit`, inputs).then(function(response){
             console.log(response.data);
             navigate('/itemList');
         });
