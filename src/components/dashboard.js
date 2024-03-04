@@ -1,3 +1,5 @@
+/*Dashboard.js*/
+
 import { useState, useEffect } from 'react';
 import NavBarCom from './navbarcom';
 import { Col, Container, Row } from "react-bootstrap";
