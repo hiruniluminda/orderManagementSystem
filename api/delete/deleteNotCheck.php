@@ -26,7 +26,7 @@ if(isset($_POST['accept_button'])) {
     $order_id = $_POST['order_id'];
 
     // Get the details of the selected order
-    $sql_select_order = "SELECT * FROM trash WHERE inv_id = $order_id";
+    $sql_select_order = "SELECT * FROM not_checked_received WHERE inv_id = $order_id";
     $result_select_order = $conn->query($sql_select_order);
 
     if ($result_select_order->num_rows > 0) {
@@ -38,10 +38,10 @@ if(isset($_POST['accept_button'])) {
 
 
         // Delete the selected order from orders table
-        $sql_delete_order = "DELETE FROM trash WHERE inv_id = $order_id";
+        $sql_delete_order = "DELETE FROM not_checked_received WHERE inv_id = $order_id";
         if ($conn->query($sql_delete_order) === TRUE) {
             // Insert the order into checks table
-            $sql_insert_check = "INSERT INTO trash1 (inv_id, name, email, mobile) VALUES ($inv_id,'$name','$email',$mobile)";
+            $sql_insert_check = "INSERT INTO trash (inv_id, name, email, mobile) VALUES ($inv_id,'$name','$email',$mobile)";
             if ($conn->query($sql_insert_check) === TRUE) {
                 echo json_encode(array("message" => "Order accepted and moved to checks table successfully."));
             } else {
@@ -54,7 +54,7 @@ if(isset($_POST['accept_button'])) {
 }
 
 // Fetch orders from database
-$sql_select_orders = "SELECT * FROM trash";
+$sql_select_orders = "SELECT * FROM not_checked_received";
 $result_select_orders = $conn->query($sql_select_orders);
 $orders = array();
 if ($result_select_orders->num_rows > 0) {

@@ -85,7 +85,32 @@ function Order() {
       } catch (error) {
       }
     };
-
+/* */
+const handleDeleteOrder = async (orderId) => {
+    try {
+      const response = await fetch('http://localhost/api/delete/deleteOrders.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          accept_button: 'true',
+          order_id: orderId,
+        }),
+      });            getUsers();
+      /*
+      const data = await response.json();
+      if (data.error) {
+        setError(data.error);
+        setMessage('');
+      } else {
+        setMessage(data.message);
+        setError('');
+        fetchOrders(); // Refresh orders after accepting
+      }*/
+    } catch (error) {
+    }
+  };
     /* */
 
     const MyTable = () => (
@@ -112,7 +137,7 @@ function Order() {
                             <td>
                                 <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
                                 <Link to={`/user/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
-                                <button onClick={() => deleteUser(user.id)}>Delete</button>
+                                <button onClick={() => handleDeleteOrder(user.inv_id)}>Delete</button>
                                 <button onClick={() => handleAcceptOrder(user.inv_id)}>Accept</button>
 
                             </td>

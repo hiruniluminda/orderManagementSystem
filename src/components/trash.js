@@ -37,13 +37,33 @@ function Trash() {
             });
     }
     /* delete users data from order.php file using id */
-    const deleteUser = (id) => {
-        axios.delete(`http://localhost/api/trash/trash.php/${id}/delete`).then(response =>{
-            console.log(response.data);
-            getUsers();
-        });
+    
+const handleDelete = async (orderId) => {
+    try {
+      const response = await fetch('http://localhost/api/trash/trash.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          accept_button: 'true',
+          order_id: orderId,
+        }),
+      });            getUsers();
+      /*
+      const data = await response.json();
+      if (data.error) {
+        setError(data.error);
+        setMessage('');
+      } else {
+        setMessage(data.message);
+        setError('');
+        fetchOrders(); // Refresh orders after accepting
+      }*/
+    } catch (error) {
     }
-
+  };
+    
     const MyTable = () => (
         <div style={{ maxHeight: "350px", overflowY: "auto" }}> 
             
@@ -71,7 +91,7 @@ function Trash() {
                             <td>
                                 <Button variant="primary" onClick={() => setModalShow(row.inv_id)}>Launch modal with grid</Button>
                                 <Link to={`/check_received/${row.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
-                                <button onClick={() => deleteUser(row.id)}>Delete</button>
+                                <button onClick={() => handleDelete(row.inv_id)}>Delete</button>
 
                             </td>
                         </tr> 
