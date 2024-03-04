@@ -64,7 +64,39 @@ function Dashboard() {
             getUsers();
         });
     };
-    
+    /*delete and transfer notcheck to trash */
+    const handleDeleteNotCheck = async (orderId) => {
+        try {
+          const response = await fetch('http://localhost/api/delete/deleteNotCheck.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              accept_button: 'true',
+              order_id: orderId,
+            }),
+          });            getUsers();
+        } catch (error) {
+        }
+      };
+
+    /*delete and transfer check to trash */
+      const handleDeleteCheck = async (orderId) => {
+        try {
+          const response = await fetch('http://localhost/api/delete/deleteCheck.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              accept_button: 'true',
+              order_id: orderId,
+            }),
+          });            getUsers();
+        } catch (error) {
+        }
+      };
     
     
 /*create table and put data into the table in not_check_received section */
@@ -92,7 +124,7 @@ function Dashboard() {
                             <td>
                                 <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
                                 <Link to={`/check_received/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
-                                <button onClick={() => deleteUser(user.id)}>Delete</button>
+                                <button onClick={() => handleDeleteNotCheck(user.inv_id)}>Delete</button>
 
                             </td>
                         </tr>
@@ -130,7 +162,7 @@ function Dashboard() {
                             <td>
                                 <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
                                 <Link to={`/check_received/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
-                                <button onClick={() => deleteUser1(user.id)}>Delete</button>
+                                <button onClick={() => handleDeleteCheck(user.inv_id)}>Delete</button>
 
                             </td>
                         </tr>

@@ -13,7 +13,7 @@ import Image from 'react-bootstrap/Image';
 import { Button } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Alert from 'react-bootstrap/Alert';
-import Notification from './notification';
+import Notifications from './notifications';
 
 function NavBarCom() {
     const location = useLocation();
@@ -29,9 +29,6 @@ function NavBarCom() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    /* */
-    const [modalShow, setModalShow] = useState(true);
-    /* */
     return (
         <div>
             
@@ -106,10 +103,8 @@ function NavBarCom() {
                     <Col fluid xs={2} className='noti-col'>
                         <div>
                             <h5 id='noti-head'>Notification</h5>
-                            <p>
-                            <Notification show={modalShow} onHide={() => setModalShow(false)} inv_id={modalShow} />
+                            <p id='noti-sec'><Notifications/></p>
 
-                            </p>
                         </div>
                     </Col>
                 </Row>
