@@ -86,7 +86,35 @@
     margin-top: 10px;
     padding: 10px;
 }
-
+/*notification.js*/
+#remindcolorx{
+    border-radius: 10px;
+    padding: 5px;
+    background-color: yellow;
+    list-style-type: none;
+}
+#remindcolory{
+    border-radius: 10px;
+    padding: 5px;
+    background-color: rgb(255, 0, 0);
+    list-style-type: none;
+}
+.notifications{
+    color: #1e1d1d;
+    font-style: italic;
+}
+.notifications h5{
+    color: #fff;
+    font-size: 15px;
+}
+#notiscrol{
+    max-height: 400px;
+    overflow-y:auto;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+}
+/**/
 
 @media (width < 1150px) {
     .dashing-section{
@@ -104,12 +132,18 @@
     .foot{
         margin-left: -200px;
     }
+    .notifications h5{
+        font-size: 11px;
+    }
   }
   @media (width < 700px) {
     .dashing-section{
         font-size:9px;
     }
     .inv-dashing{
+        font-size: 9px;
+    }
+    .notifications h5{
         font-size: 9px;
     }
   }

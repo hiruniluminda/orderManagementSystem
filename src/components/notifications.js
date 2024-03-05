@@ -59,15 +59,15 @@ function Notification() {
 
     return (
     <div className="notifications">
-        <h5>Please get checks for invoices</h5>
-        <ul>
+        <h5>Please Release Check</h5>
+        <div id='notiscrol'>
+        {remindersOver.map((reminder, index) => (
+            <p id='remindcolory' key={index}>Invoice {reminder.inv_id} needs attention. Over.</p>
+            ))}
             {reminders.map((reminder, index) => (
-            <li key={index}>Invoice {reminder.inv_id} needs attention. {reminder.daysRemaining} days remaining.</li>
+            <p id='remindcolorx' key={index}>Invoice {reminder.inv_id} needs attention. {reminder.daysRemaining} days remaining.</p>
             ))}
-            {remindersOver.map((reminder, index) => (
-            <li key={index}>Invoice {reminder.inv_id} needs attention. Over.</li>
-            ))}
-        </ul>
+        </div>
     </div>
     );
 }

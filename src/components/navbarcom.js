@@ -14,6 +14,8 @@ import { Button } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Alert from 'react-bootstrap/Alert';
 import Notifications from './notifications';
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
+import MenuIcon from '@mui/icons-material/Menu';
 
 function NavBarCom() {
     const location = useLocation();
@@ -29,8 +31,13 @@ function NavBarCom() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    /*notification useStates */
+    const [showNoti, setShowNoti] = useState(false);
+    const handleCloseNoti = () => setShowNoti(false);
+    const handleShowNoti = () => setShowNoti(true);
+
     return (
-        <div>
+        <div className='backgroundmain'>
             
 
             <Offcanvas show={show} onHide={handleClose} placement="start" className="mobcolor">
@@ -62,14 +69,26 @@ function NavBarCom() {
                 </Offcanvas.Body>
             </Offcanvas>
 
+{/*notifications */}
+            <Offcanvas show={showNoti} onHide={handleCloseNoti} placement="end" className="mobcolor">
+                
+                <Offcanvas.Body>
+                    <div>
+                            <h5 id='noti-head'>Notification</h5>
+                            <p className='navlink' id='noti-sec'><Notifications/></p>
+
+                        </div>
+                </Offcanvas.Body>
+            </Offcanvas>
+
             <Container fluid className='cont-sec-main'>
                 <Row fluid className="rowsize1">
                     <Col fluid className="rowcolor">
                         <div className='header'>
-                        <Button variant="primary" className="d-lg-none" onClick={handleShow}>Launch</Button>
+                        <p className="d-lg-none" onClick={handleShow}><MenuIcon id="menubutton"/></p>
                             <Image id='profile-img' src={Pro} roundedCircle />
                             <h3 id='header-name'>Name.PVT(Ltd.)</h3>
-                           
+                       <p className="d-lg-none" onClick={handleShowNoti}><CircleNotificationsIcon id="notiButton"/></p>
                         </div>
                     </Col>
                 </Row>
@@ -99,7 +118,7 @@ function NavBarCom() {
                             </Nav.Item>
                         </Nav>
                     </Col>
-                    <Col fluid></Col>
+                    <Col fluid className='backgroundbodymain'></Col>
                     <Col fluid xs={2} className='noti-col'>
                         <div>
                             <h5 id='noti-head'>Notification</h5>
