@@ -116,29 +116,31 @@ const handleDeleteOrder = async (orderId) => {
     const MyTable = () => (
         <div style={{maxHeight: "350px", overflowY: "auto"}}> 
             
-            <Table striped bordered hover> 
+            <Table striped bordered hover variant="dark"> 
                 <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
                     <tr>
-                        <th>#</th>
+                        <th>Id</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Mobile</th>
                         <th>invoice_id</th>
+                        <th>Data Handling Options</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     {users.map((user, key) =>
-                        <tr key={key}>
+                        <tr className='tablerow' key={key}>
                             <td>{user.id}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{user.mobile}</td>
                             <td>{user.inv_id}</td>
                             <td>
-                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
-                                <Link to={`/user/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
-                                <button onClick={() => handleDeleteOrder(user.inv_id)}>Delete</button>
-                                <button onClick={() => handleAcceptOrder(user.inv_id)}>Accept</button>
+                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
+                                <Link to={`/user/${user.id}/edit`} className='addingmargin' style={{marginRight: "10px"}}>Edit</Link>
+                                <button className='addingmarginx' onClick={() => handleDeleteOrder(user.inv_id)}>Delete</button>
+                                <button className='addingmarginy' onClick={() => handleAcceptOrder(user.inv_id)}>Accept</button>
 
                             </td>
                         </tr>
@@ -174,7 +176,7 @@ const handleDeleteOrder = async (orderId) => {
                                 <MyTable />
                             </div>
                             <Row className='inv-content2'>
-                                <Col xs={4}><Link to="user/create">Create User</Link></Col>
+                                <Col xs={4}><Link to="user/create" id='createbutton'>Create User</Link></Col>
                                 <Col xs={5}>01</Col>
                                 <Col xs={1}>
                                     <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>

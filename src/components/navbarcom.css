@@ -1,6 +1,9 @@
-.backgroundbodymain{
+#backgroundbodymain{
+    border-radius: 10px;
+    background-color: rgb(64, 65, 65);
 }
 .backgroundmain{
+    background-color: rgb(0, 0, 0);
 }
 .cont-sec-main {
   height: 100vh; /* Occupy full viewport height */
@@ -139,6 +142,9 @@
     }
     .rowsize2{
         display: none;
+    }
+    .backgroundmain{
+        background-color: unset;
     }
   }
   @media (width < 590px) {

@@ -24,9 +24,10 @@ function Checkinputbox() {
 
   return (
     <div>
-      <h2>Insert Check Received</h2>
+      <h2 id='check-topic'>Insert Check Received</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="inv_id">Check Numbers (comma-separated):</label><br />
+        <div className='checkInsertForm'>
+        <label id='checkCont' htmlFor="inv_id">Check Numbers (comma-separated):</label><br />
         <input
           type="text"
           id="inv_id"
@@ -34,7 +35,8 @@ function Checkinputbox() {
           value={checkNumbers}
           onChange={(e) => setCheckNumbers(e.target.value)}
         /><br /><br />
-        <input type="submit" value="Submit" />
+        </div>
+        <input id='checkinsertbut' type="submit" value="Submit" />
       </form>
       {message && <p>{message}</p>}
     </div>

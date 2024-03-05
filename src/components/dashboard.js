@@ -15,6 +15,7 @@ import Table from 'react-bootstrap/Table';
 import axios from "axios";
 import MyVerticallyCenteredModal from './show';
 
+
 /*dashboard section*/
 function Dashboard() {
     const [modalShow, setModalShow] = useState(false);
@@ -103,28 +104,29 @@ function Dashboard() {
     const MyTable = () => (
         <div style={{maxHeight: "350px", overflowY: "auto"}}> 
             
-            <Table striped bordered hover> 
+            <Table striped bordered hover responsive variant="dark" > 
                 <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
                     <tr>
-                        <th>#</th>
+                        <th>Id</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Mobile</th>
                         <th>invoice_id</th>
+                        <th>Data Handling Options</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map((user, key) =>
-                        <tr key={key}>
+                        <tr className='tablerow' key={key}>
                             <td>{user.id}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{user.mobile}</td>
                             <td>{user.inv_id}</td>
                             <td>
-                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
-                                <Link to={`/check_received/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
-                                <button onClick={() => handleDeleteNotCheck(user.inv_id)}>Delete</button>
+                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
+                                <Link to={`/check_received/${user.id}/edit`} className='addingmargin' style={{marginRight: "10px"}}>Edit</Link>
+                                <button className='addingmarginxy' onClick={() => handleDeleteNotCheck(user.inv_id)}>Delete</button>
 
                             </td>
                         </tr>
@@ -141,28 +143,29 @@ function Dashboard() {
     const MyTable2 = () => (
         <div style={{maxHeight: "350px", overflowY: "auto"}}> 
             
-            <Table striped bordered hover> 
+            <Table striped bordered hover responsive variant="dark" > 
                 <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
                     <tr>
-                        <th>#</th>
+                        <th>Id</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Mobile</th>
                         <th>invoice_id</th>
+                        <th>Data Handling Options</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users1.map((user, key) =>
-                        <tr key={key}>
+                        <tr className='tablerow' key={key}>
                             <td>{user.id}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{user.mobile}</td>
                             <td>{user.inv_id}</td>
                             <td>
-                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>Launch modal with grid</Button>
-                                <Link to={`/check_received/${user.id}/edit`} style={{marginRight: "10px"}}>Edit</Link>
-                                <button onClick={() => handleDeleteCheck(user.inv_id)}>Delete</button>
+                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
+                                <Link to={`/check_received/${user.id}/edit`} className='addingmargin' style={{marginRight: "10px"}}>Edit</Link>
+                                <button className='addingmarginxy' onClick={() => handleDeleteCheck(user.inv_id)}>Delete</button>
 
                             </td>
                         </tr>
@@ -207,7 +210,7 @@ function Dashboard() {
                         </Tab>
                        
                         {/*tab2 section */}
-                        <Tab eventKey="profile" title="Not Check Receive">
+                        <Tab eventKey="profile" title="Not Check Received">
                         <div className='inv-dashing'>
                                 <MyTable />{/* call MyTable function */}
                             </div>

@@ -118,7 +118,7 @@ function NavBarCom() {
                             </Nav.Item>
                         </Nav>
                     </Col>
-                    <Col fluid className='backgroundbodymain'></Col>
+                    <Col fluid id='backgroundbodymain'></Col>
                     <Col fluid xs={2} className='noti-col'>
                         <div>
                             <h5 id='noti-head'>Notification</h5>
