@@ -124,7 +124,7 @@ function Dashboard() {
                             <td>{user.mobile}</td>
                             <td>{user.inv_id}</td>
                             <td>
-                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
+                                <Button  className='addingmarginmore' variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
                                 <Link to={`/check_received/${user.id}/edit`} className='addingmargin' style={{marginRight: "10px"}}>Edit</Link>
                                 <button className='addingmarginxy' onClick={() => handleDeleteNotCheck(user.inv_id)}>Delete</button>
 
@@ -163,7 +163,7 @@ function Dashboard() {
                             <td>{user.mobile}</td>
                             <td>{user.inv_id}</td>
                             <td>
-                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
+                                <Button className='addingmarginmore' variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
                                 <Link to={`/check_received/${user.id}/edit`} className='addingmargin' style={{marginRight: "10px"}}>Edit</Link>
                                 <button className='addingmarginxy' onClick={() => handleDeleteCheck(user.inv_id)}>Delete</button>
 

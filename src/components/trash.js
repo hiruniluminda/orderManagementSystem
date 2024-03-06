@@ -89,7 +89,7 @@ const handleDelete = async (orderId) => {
                             <td>{row.mobile}</td> 
                             <td>{row.inv_id}</td> 
                             <td>
-                                <Button variant="primary" onClick={() => setModalShow(row.inv_id)}>More</Button>
+                                <Button className='addingmarginmore' variant="primary" onClick={() => setModalShow(row.inv_id)}>More</Button>
                                 <Link to={`/check_received/${row.id}/edit`} className='addingmargin' style={{marginRight: "10px"}}>Edit</Link>
                                 <button className='addingmarginxy' onClick={() => handleDelete(row.inv_id)}>Delete</button>
 
