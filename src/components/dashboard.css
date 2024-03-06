@@ -102,7 +102,7 @@
     border-radius: 5px;
     color: #fff;
     text-decoration: none;
-    padding: 5px 20px;
+    padding: 7px 20px;
 }
 .addingmarginx{
     margin-left: 20px;
@@ -125,6 +125,11 @@
     color: #fff;
     border-radius: 5px;
     background-color: #19ec09;
+    padding: 5px 10px;
+}
+.addingmarginmore{
+    color: #fff;
+    border-radius: 5px;
     padding: 5px 10px;
 }
 #createbutton{
@@ -190,6 +195,42 @@
     scrollbar-width: none;
 }
 /**/
+/**/
+.contactinput{
+    margin-bottom: 10px;
+    width: 60%;
+    height: 40px;
+    background-color: #838481;
+    color: rgb(0, 0, 0);
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-radius: 10px;
+}
+.contactinputbody{
+    margin-bottom: 20px;
+    width: 60%;
+    height: 100px;
+    background-color: #838481;
+    color: rgb(0, 0, 0);
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-radius: 10px;
+
+}
+.emaillabel{
+    color: white;
+}
+#formemail{
+    margin-left: 200px;
+}
+#emailsentbtn{
+    background-color: rgb(198, 58, 11);
+    border-radius: 10px;
+    border: 2px solid rgb(128, 58, 0);
+    padding: 5px 50px 5px 50px;
+    margin-left: 20%;
+    font-size: 20px;
+    color: white;
+}
+/**/
 
 @media (width < 1150px) {
     .dashing-section{
@@ -203,6 +244,41 @@
         padding-right: 10px;
     }
   }
+  @media (width < 1060px) {
+    .addingmargin{
+        margin-left: 10px;
+        padding: 4px 5px;
+    }
+    .addingmarginxy{
+        margin-right: -5px;
+        margin-left: 0px;
+        padding: 3px 2px;
+    }
+    .addingmarginmore{
+        padding: 1px 2px;
+    }
+    .addingmarginy{
+        margin-left: 10px;
+        margin-right: -5px;
+        padding: 2px 2px;
+    }
+    #emailsentbtn{
+        padding: 5px 50px 5px 50px;
+        margin-left: 20%;
+        font-size: 20px;
+    }
+    .contactinput{
+        width: 80%;
+        height: 40px;
+    }
+    .contactinputbody{
+        width: 80%;
+        height: 100px;    
+    }
+    #formemail{
+        margin-left: 100px;
+    }
+  }
   @media (width < 1000px) {
     .foot{
         margin-left: -200px;
@@ -210,6 +286,29 @@
     .notifications h5{
         font-size: 11px;
     }
+  }
+  @media (width < 920px) {
+    .addingmargin{
+        margin-left: 5px;
+        padding: 3px 5px;
+        font-size: 10px;
+    }
+    .addingmarginxy{
+        margin-left: -5px;
+        padding: 2px 1px;
+        font-size: 10px;
+
+    }
+    .addingmarginmore{
+        padding: 1px 1px;
+        font-size: 10px;
+    }
+    .addingmarginy{
+        margin-left:5px;
+        padding: 1px 1px;
+        font-size: 10px;
+    }
+   
   }
   @media (width < 700px) {
     .dashing-section{
@@ -220,6 +319,39 @@
     }
     .notifications h5{
         font-size: 9px;
+    }
+    /*dashboard button*/
+    .addingmargin{
+        margin-left: 5px;
+        padding: 3px 5px;
+        font-size: 8px;
+    }
+    .addingmarginxy{
+        margin-left: -5px;
+        padding: 2px 1px;
+        font-size: 8px;
+
+    }
+    .addingmarginmore{
+        padding: 1px 1px;
+        font-size: 8px;
+    }
+    .addingmarginy{
+        margin-left:5px;
+        padding: 1px 1px;
+        font-size: 8px;
+    }
+    
+    .contactinput{
+        width: 90%;
+        height: 40px;
+    }
+    .contactinputbody{
+        width: 90%;
+        height: 100px;    
+    }
+    #formemail{
+        margin-left: 50px;
     }
   }
 
@@ -237,6 +369,29 @@
     .dashing-section{
         font-size:12px;
     }
+    .addingmargin{
+        margin-left: 5px;
+        padding: 3px 5px;
+        font-size: 10px;
+    }
+    .addingmarginxy{
+        margin-left: -5px;
+        padding: 2px 1px;
+        font-size: 10px;
+
+    }
+    .addingmarginmore{
+        padding: 1px 1px;
+        font-size: 10px;
+    }
+    .addingmarginy{
+        font-size: 10px;
+    }
+    #emailsentbtn{
+        padding: 5px 50px 5px 50px;
+        margin-left: 30%;
+        font-size: 20px;
+    }
   }
 
   @media (width < 500px) {
@@ -246,11 +401,44 @@
     .printbtn{
         margin-left: -50px;
     }
+    .addingmargin{
+        margin-left: 5px;
+        padding: 3px 5px;
+        font-size: 8px;
+    }
+    .addingmarginxy{
+        margin-left: -5px;
+        padding: 2px 1px;
+        font-size: 8px;
+
+    }
+    .addingmarginmore{
+        padding: 1px 1px;
+        font-size: 8px;
+    }
   }
 
   @media (width < 430px) {
     .dashing-section{
         font-size:8px;
         font-weight: bolder;
+    }
+    .addingmargin{
+        font-size: 6px;
+    }
+    .addingmarginxy{
+        font-size: 6px;
+
+    }
+    .addingmarginmore{
+        font-size: 6px;
+    }
+    .addingmarginy{
+        font-size: 6px;
+    }
+    #emailsentbtn{
+        padding: 5px 50px 5px 50px;
+        margin-left: 18%;
+        font-size: 20px;
     }
   }

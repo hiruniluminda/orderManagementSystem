@@ -137,9 +137,9 @@ const handleDeleteOrder = async (orderId) => {
                             <td>{user.mobile}</td>
                             <td>{user.inv_id}</td>
                             <td>
-                                <Button variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
+                                <Button className='addingmarginmore' variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
                                 <Link to={`/user/${user.id}/edit`} className='addingmargin' style={{marginRight: "10px"}}>Edit</Link>
-                                <button className='addingmarginx' onClick={() => handleDeleteOrder(user.inv_id)}>Delete</button>
+                                <button className='addingmarginxy' onClick={() => handleDeleteOrder(user.inv_id)}>Delete</button>
                                 <button className='addingmarginy' onClick={() => handleAcceptOrder(user.inv_id)}>Accept</button>
 
                             </td>
