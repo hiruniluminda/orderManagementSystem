@@ -1,69 +1,70 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { database } from './firebaseConfig';
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, onSnapshot } from 'firebase/firestore';
 import NavBarCom from './navbarcom';
-import { Col, Container, Row } from "react-bootstrap";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Navbar from 'react-bootstrap/Navbar';
-import "./dashboard.css";
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
+import { Col, Row, Form, Button, Tabs, Tab } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AddToHomeScreenIcon from '@mui/icons-material/AddToHomeScreen';
-import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Link } from 'react-router-dom';
-import Table from 'react-bootstrap/Table';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
+function FirebaseFirestore() {
+    const [foodCode, setFoodCode] = useState('');
+    const [foodName, setFoodName] = useState('');
+    const [price, setPrice] = useState('');
+    const [id, setId] = useState('');
+    const [show, setShow] = useState(false);
+    const [items, setItems] = useState([]);
 
-function Prices() {
-    const rows = [ 
-        { itemid: 1, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>}, 
-        { itemid: 2, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 3, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 4, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 5, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 6, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 7, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 8, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 9, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 10, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 11, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 12, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
-        { itemid: 13, name: "John", desc: "vegetable", oldp: "10/02/2024", currentp: "11/02/2024", addnewp: <AddCircleIcon/>},
+    const value = collection(database, 'priceList');
 
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            const snapshot = await getDocs(value);
+            const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+            setItems(data);
+        };
+        fetchData();
 
-    const MyTable = () => (
-        <div style={{ maxHeight: "350px", overflowY: "auto" }}> 
-            
-            <Table striped bordered hover> 
-                <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
-                    <tr> 
-                        <th className="table-header-bg">Item ID</th> 
-                        <th className="table-header-bg">Name</th> 
-                        <th className="table-header-bg">Description</th>
-                        <th className="table-header-bg">Old price(Rs.)</th>
-                        <th className="table-header-bg">Current Price(Rs.)</th>
-                        <th className="table-header-bg">Add New Price</th>
-                    </tr> 
-                </thead> 
-                <tbody> 
-                   
-                    {rows.map((row) => ( 
-                        <tr key={row.id}> 
-                            <td>{row.itemid}</td> 
-                            <td>{row.name}</td> 
-                            <td>{row.desc}</td>
-                            <td>{row.oldp}</td> 
-                            <td>{row.currentp}</td> 
-                            <td>{row.addnewp}</td> 
-                        </tr> 
-                    ))} 
-                </tbody> 
-            </Table> 
-        </div> 
-    );
+        // Listen for real-time updates
+        const unsubscribe = onSnapshot(value, (snapshot) => {
+            const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+            setItems(data);
+        });
+
+        // Unsubscribe from real-time updates when component unmounts
+        return () => unsubscribe();
+    }, []);
+
+    const handleCreate = async () => {
+        await addDoc(value, { foodCode, foodName, price });
+        setFoodCode('');
+        setFoodName('');
+        setPrice('');
+    };
+
+    const handleDelete = async (id) => {
+        await deleteDoc(doc(database, 'priceList', id));
+    };
+
+    const handleEdit = (id, foodCode, foodName, price) => {
+        setFoodCode(foodCode);
+        setFoodName(foodName);
+        setPrice(price);
+        setId(id);
+        setShow(true);
+    };
+
+    const handleUpdate = async () => {
+        const updateData = doc(database, 'priceList', id);
+        await updateDoc(updateData, {
+            oldPrice: price,
+            price: price
+        });
+        setShow(false);
+        setFoodCode('');
+        setFoodName('');
+        setPrice('');
+    };
 
     return (
         <>
@@ -85,13 +86,31 @@ function Prices() {
                     <Tabs variant="pills" defaultActiveKey="home" className="mb-3" fill>
                         <Tab eventKey="home" title="Latest Prices">
                             <div className='inv-dashing'>
-                                <MyTable />
+                                <div className="App">
+                                    <div className='container'>
+                                        <input value={foodCode} onChange={(e) => setFoodCode(e.target.value)} />
+                                        <input value={foodName} onChange={(e) => setFoodName(e.target.value)} />
+                                        <input value={price} onChange={(e) => setPrice(e.target.value)} />
+                                        {!show ? <button onClick={handleCreate}>Create</button> :
+                                            <button onClick={handleUpdate}>Update</button>}
+                                        {
+                                            items.map(item =>
+                                                <div key={item.id}>
+                                                    <h1>{item.foodCode}</h1>
+                                                    <h1>{item.foodName}</h1>
+                                                    <h1>{item.price}</h1>
+                                                    <button onClick={() => handleDelete(item.id)}>Delete</button>
+                                                    <button onClick={() => handleEdit(item.id, item.foodCode, item.foodName, item.price)}>Edit</button>
+                                                </div>)
+                                        }
+                                    </div>
+                                </div>
                             </div>
                             <Row className='inv-content2'>
-                                <Col xs={4}><Button className='printbtnx'><AddBoxIcon/>&nbsp;&nbsp;Add</Button></Col>
+                                <Col xs={4}><Button className='printbtnx'><AddBoxIcon />&nbsp;&nbsp;Add</Button></Col>
                                 <Col xs={5}></Col>
                                 <Col xs={1}>
-                                <Button className='printbtn'><LocalPrintshopIcon/>&nbsp;&nbsp;Print</Button>
+                                    <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
                                 </Col>
                             </Row>
                         </Tab>
@@ -102,4 +121,4 @@ function Prices() {
     );
 }
 
-export default Prices;
+export default FirebaseFirestore;
