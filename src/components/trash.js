@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+/* import { useEffect, useState } from 'react';
 import NavBarCom from './navbarcom';
 import { Col, Container, Row } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
@@ -26,7 +26,7 @@ function Trash() {
         getUsers();
     }, []);
 
-    /* get users data from order.php file */
+    /* get users data from order.php file *//*
     function getUsers() {
         axios.get('http://localhost/api/trash/trash.php').then(response => {
                 console.log(response.data);
@@ -36,7 +36,7 @@ function Trash() {
                 console.error('Error fetching users:', error);
             });
     }
-    /* delete users data from order.php file using id */
+    /* delete users data from order.php file using id *//*
     
 const handleDelete = async (orderId) => {
     try {
@@ -59,7 +59,7 @@ const handleDelete = async (orderId) => {
         setMessage(data.message);
         setError('');
         fetchOrders(); // Refresh orders after accepting
-      }*/
+      }*//*
     } catch (error) {
     }
   };
@@ -140,4 +140,4 @@ const handleDelete = async (orderId) => {
     );
 }
 
-export default Trash;
+export default Trash; */

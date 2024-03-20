@@ -8,7 +8,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import MyVerticallyCenteredModal from './show';
-import { collection, getDocs, deleteDoc, doc, addDoc } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, addDoc, getDoc } from 'firebase/firestore';
 import { database } from './firebaseConfig';
 
 function Order() {
@@ -34,7 +34,7 @@ function Order() {
 
     const handleAcceptUser = async (userId) => {
         const userDocRef = doc(database, 'users', userId);
-        const userSnapshot = await getDocs(userDocRef);
+        const userSnapshot = await getDoc(userDocRef); // Use getDoc instead of getDocs
         if (userSnapshot.exists()) {
             const userData = userSnapshot.data();
             await addDoc(collection(database, 'orders'), userData);
@@ -42,6 +42,7 @@ function Order() {
             fetchUsers();
         }
     };
+    
 
     const MyTable = () => (
         <div style={{ maxHeight: "350px", overflowY: "auto" }}>
