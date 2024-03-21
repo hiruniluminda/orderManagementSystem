@@ -5,7 +5,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { database } from './firebaseConfig';
 
 function Notification() {
-    const [notifications, setNotifications] = useState([]);
+    const [users, setNotifications] = useState([]);
     const [reminders, setReminders] = useState([]);
     const [remindersOver, setOverReminders] = useState([]);
 
@@ -15,11 +15,11 @@ function Notification() {
 
     useEffect(() => {
         checkReminders();
-    }, [notifications]);
+    }, [users]);
 
     const fetchNotifications = async () => {
         try {
-            const querySnapshot = await getDocs(collection(database, 'notifications'));
+            const querySnapshot = await getDocs(collection(database, 'users'));
             const notificationsData = querySnapshot.docs.map(doc => doc.data());
             setNotifications(notificationsData);
         } catch (error) {
@@ -31,27 +31,37 @@ function Notification() {
         const currentDate = new Date();
         const remindersArray = [];
         const remindersoverArray = [];
-
-        notifications.forEach(notification => {
-            const createdAtDate = new Date(notification.created_at); // Assuming your notification object has a created_at field
+    
+        users.forEach(user => {
+            const createdAtTimestamp = user.created_at;
+            if (createdAtTimestamp instanceof Date) {
+                // Skip if already a Date object
+                return;
+            }
+            if (!createdAtTimestamp || !createdAtTimestamp.toDate) {
+                console.error("Invalid created_at timestamp:", createdAtTimestamp);
+                return;
+            }
+            const createdAtDate = createdAtTimestamp.toDate(); // Convert Firestore timestamp to JavaScript Date object
             const timeDiff = currentDate.getTime() - createdAtDate.getTime();
             const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
+    
             if (daysDiff >= 25 && daysDiff < 30) {
                 remindersArray.push({
-                    inv_id: notification.inv_id,
+                    inv_id: user.inv_id,
                     daysRemaining: 30 - daysDiff
                 });
             } else if (daysDiff >= 30) {
                 remindersoverArray.push({
-                    inv_id: notification.inv_id,
+                    inv_id: user.inv_id,
                 });
             }
         });
-
+    
         setReminders(remindersArray);
         setOverReminders(remindersoverArray);
     };
+    
 
     return (
         <div className="notifications">

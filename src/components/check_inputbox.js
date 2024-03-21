@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { addDoc, collection, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import { database } from './firebaseConfig';
 
-function Checkinputbox() {
+function Checkinputbox({ onDeleteData }) {
   const [checkNumbers, setCheckNumbers] = useState('');
   const [message, setMessage] = useState('');
 
@@ -34,13 +34,8 @@ function Checkinputbox() {
         })
       );
 
-      // Delete data from Not Check Received section
-      await Promise.all(
-        numbersArray.map(async (num) => {
-          const orderDocRef = doc(database, 'orders', num);
-          await deleteDoc(orderDocRef);
-        })
-      );
+      // Trigger the callback function to delete data
+
     } catch (error) {
       console.error('Error:', error);
       setMessage('An error occurred while processing your request.');

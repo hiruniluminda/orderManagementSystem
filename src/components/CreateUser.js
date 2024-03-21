@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { database } from "./firebaseConfig"; // Import your Firebase configuration
 import { useNavigate } from "react-router-dom";
-
 
 export default function ListUser() {
     const navigate = useNavigate();
@@ -24,7 +23,7 @@ export default function ListUser() {
 
         try {
             // Add user data to Firestore collection
-            await addDoc(collection(database, "users"), inputs);
+            await addDoc(collection(database, "users"));
             console.log("User created successfully!");
             // Redirect to itemList after successful creation
             navigate("/itemList");
