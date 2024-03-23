@@ -20,10 +20,10 @@ export default function ListUser() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         try {
             // Add user data to Firestore collection
-            await addDoc(collection(database, "users"));
+            await addDoc(collection(database, "users"), { ...inputs, timestamp: serverTimestamp() });
             console.log("User created successfully!");
             // Redirect to itemList after successful creation
             navigate("/itemList");
@@ -31,7 +31,7 @@ export default function ListUser() {
             console.error("Error creating user:", error);
         }
     };
-
+    
     return (
         <div>
             <h1>Create user</h1>

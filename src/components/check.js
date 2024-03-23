@@ -11,15 +11,20 @@ import { database } from './firebaseConfig';
 function Check() {
     const [checks, setChecks] = useState([]);
 
-    const fetchChecks = async () => {
-        try {
-            const querySnapshot = await getDocs(collection(database, 'checks'));
-            const checksData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-            setChecks(checksData);
-        } catch (error) {
-            console.error('Error fetching checks:', error);
-        }
-    };
+    // Other code remains unchanged
+
+const fetchChecks = async () => {
+    try {
+        const querySnapshot = await getDocs(collection(database, 'checks'));
+        const checksData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        setChecks(checksData);
+    } catch (error) {
+        console.error('Error fetching checks:', error);
+    }
+};
+
+// Other code remains unchanged
+
 
     const handleDeleteCheck = async (checkId) => {
         try {

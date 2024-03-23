@@ -41,6 +41,7 @@ function App() {
         <Route path="/request" element={<Request />} />
         <Route path="/check" element={<Check />} />
         <Route path="/trash" element={<Trash />} />
+        <Route path="/logout" element={<Login />} />
       </Routes>
     </Router>
   );

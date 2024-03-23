@@ -9,13 +9,11 @@ function Checkinputbox({ onDeleteData }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Split check numbers by comma and trim any extra spaces
       const numbersArray = checkNumbers.split(',').map(num => num.trim());
 
-      // Add each check number to Firebase
       const batch = numbersArray.map(num => ({
         inv_id: num,
-        received: true // Assuming you want to mark checks as received
+        received: true
       }));
       await Promise.all(batch.map(data => addDoc(collection(database, 'checks'), data)));
 

@@ -28,13 +28,18 @@ function Order() {
     
     const handleDeleteUser = async (userId) => {
         const userDocRef = doc(database, 'users', userId);
-        await deleteDoc(userDocRef);
-        fetchUsers(); // Refresh
+        const userSnapshot = await getDoc(userDocRef);
+        if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+            await addDoc(collection(database, 'trash'), userData);
+            await deleteDoc(userDocRef);
+            fetchUsers();
+        }
     };
 
     const handleAcceptUser = async (userId) => {
         const userDocRef = doc(database, 'users', userId);
-        const userSnapshot = await getDoc(userDocRef); // Use getDoc instead of getDocs
+        const userSnapshot = await getDoc(userDocRef);
         if (userSnapshot.exists()) {
             const userData = userSnapshot.data();
             await addDoc(collection(database, 'orders'), userData);

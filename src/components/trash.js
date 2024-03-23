@@ -1,4 +1,4 @@
-/* import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavBarCom from './navbarcom';
 import { Col, Container, Row } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
@@ -16,53 +16,30 @@ import Table from 'react-bootstrap/Table';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import axios from 'axios';
 import MyVerticallyCenteredModal from './show';
+import { collection, getDocs, deleteDoc, doc, addDoc, getDoc } from 'firebase/firestore';
+import { database } from './firebaseConfig';
 
 function Trash() {
     const [modalShow, setModalShow] = useState(false);
     const [users, setUsers] = useState([]);
 
-
     useEffect(() => {
-        getUsers();
+        fetchUsers();
     }, []);
 
-    /* get users data from order.php file *//*
-    function getUsers() {
-        axios.get('http://localhost/api/trash/trash.php').then(response => {
-                console.log(response.data);
-                setUsers(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-            });
-    }
-    /* delete users data from order.php file using id *//*
-    
-const handleDelete = async (orderId) => {
-    try {
-      const response = await fetch('http://localhost/api/trash/trash.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          accept_button: 'true',
-          order_id: orderId,
-        }),
-      });            getUsers();
-      /*
-      const data = await response.json();
-      if (data.error) {
-        setError(data.error);
-        setMessage('');
-      } else {
-        setMessage(data.message);
-        setError('');
-        fetchOrders(); // Refresh orders after accepting
-      }*//*
-    } catch (error) {
-    }
-  };
+    const fetchUsers = async () => {
+        const usersCollection = collection(database, 'trash');
+        const usersSnapshot = await getDocs(usersCollection);
+        const usersData = usersSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        setUsers(usersData);
+    };
+    /* delete users data from order.php file using id */
+    const handleDelete = async (userId) => {
+        const userDocRef = doc(database, 'trash', userId);
+        await deleteDoc(userDocRef);
+        fetchUsers(); // Refresh
+    };
+
     
     const MyTable = () => (
         <div style={{ maxHeight: "350px", overflowY: "auto" }}> 
@@ -140,4 +117,4 @@ const handleDelete = async (orderId) => {
     );
 }
 
-export default Trash; */
+export default Trash;

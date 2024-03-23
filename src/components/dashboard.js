@@ -7,6 +7,8 @@ import MyVerticallyCenteredModal from './show';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { database } from './firebaseConfig';
 import { Link } from 'react-router-dom';
+import { addDoc, getDoc } from 'firebase/firestore';
+import Checkinputbox from './check_inputbox';
 
 function Dashboard() {
     const [modalShow, setModalShow] = useState(false);
@@ -38,25 +40,26 @@ function Dashboard() {
         }
     };
 
-    const handleDeleteOrder = async (orderId) => {
-        console.log('Deleting order:', orderId);
-        try {
-            await deleteDoc(doc(database, 'orders', orderId));
+const handleDeleteOrder = async (orderId) => {
+    const userDocRef = doc(database, 'orders', orderId);
+        const userSnapshot = await getDoc(userDocRef);
+        if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+            await addDoc(collection(database, 'trash'), userData);
+            await deleteDoc(userDocRef);
             fetchOrders();
-            console.log('Order deleted successfully.');
-        } catch (error) {
-            console.error('Error deleting order:', error);
         }
-    };
+};
 
-    const handleDeleteOrder2 = async (checkId) => {
-        console.log('Deleting check:', checkId);
-        try {
-            await deleteDoc(doc(database, 'checks', checkId));
+
+    const handleDeleteCheck = async (checkId) => {
+        const userDocRef = doc(database, 'checks', checkId);
+        const userSnapshot = await getDoc(userDocRef);
+        if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+            await addDoc(collection(database, 'trash'), userData);
+            await deleteDoc(userDocRef);
             fetchChecks();
-            console.log('Check deleted successfully.');
-        } catch (error) {
-            console.error('Error deleting check:', error);
         }
     };
 
@@ -83,7 +86,7 @@ function Dashboard() {
                             <td>{item.inv_id}</td>
                             <td>
                                 <Button variant="primary" onClick={() => setModalShow(item.inv_id)}>More</Button>
-                                <Button variant="danger" onClick={() => { console.log('Delete button clicked.'); handleDelete(item.id); }}>Delete</Button>
+                                <Button variant="danger" onClick={() => handleDelete(item.id)}>Delete</Button>
                             </td>
                         </tr>
                     ))}
@@ -110,8 +113,9 @@ function Dashboard() {
                     <Tabs variant="pills" defaultActiveKey="home" className="mb-3" fill>
                         <Tab eventKey="home" title="Check Received">
                             <div className='inv-dashing'>
-                                <MyTable data={checks} handleDelete={handleDeleteOrder2} />
+                                <MyTable data={checks} handleDelete={handleDeleteCheck} />
                             </div>
+
                             <Row className='inv-content2'>
                                 <Col xs={4}><Link to="user/create" id='createbutton'>Create User</Link></Col>
                                 <Col xs={5}>01</Col>
