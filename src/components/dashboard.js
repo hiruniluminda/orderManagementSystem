@@ -14,6 +14,9 @@ function Dashboard() {
     const [modalShow, setModalShow] = useState(false);
     const [orders, setOrders] = useState([]);
     const [checks, setChecks] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredOrders, setFilteredOrders] = useState([]);
+    const [filteredChecks, setFilteredChecks] = useState([]);
 
     useEffect(() => {
         fetchOrders();
@@ -25,6 +28,7 @@ function Dashboard() {
             const querySnapshot = await getDocs(collection(database, 'orders'));
             const ordersData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
             setOrders(ordersData);
+            setFilteredOrders(ordersData);
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
@@ -35,13 +39,14 @@ function Dashboard() {
             const querySnapshot = await getDocs(collection(database, 'checks'));
             const checksData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
             setChecks(checksData);
+            setFilteredChecks(checksData);
         } catch (error) {
             console.error('Error fetching checks:', error);
         }
     };
 
-const handleDeleteOrder = async (orderId) => {
-    const userDocRef = doc(database, 'orders', orderId);
+    const handleDeleteOrder = async (orderId) => {
+        const userDocRef = doc(database, 'orders', orderId);
         const userSnapshot = await getDoc(userDocRef);
         if (userSnapshot.exists()) {
             const userData = userSnapshot.data();
@@ -49,8 +54,7 @@ const handleDeleteOrder = async (orderId) => {
             await deleteDoc(userDocRef);
             fetchOrders();
         }
-};
-
+    };
 
     const handleDeleteCheck = async (checkId) => {
         const userDocRef = doc(database, 'checks', checkId);
@@ -62,6 +66,25 @@ const handleDeleteOrder = async (orderId) => {
             fetchChecks();
         }
     };
+
+    const handleSearch = () => {
+        // Filter orders based on search query
+        const filteredOrders = orders.filter(order =>
+            (order.name && order.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (order.email && order.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (order.mobile && order.mobile.includes(searchQuery))
+        );
+    
+        // Filter checks based on search query
+        const filteredChecks = checks.filter(check =>
+            // Assuming you have similar fields in your check data
+            (check.some_field && check.some_field.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+    
+        setFilteredOrders(filteredOrders);
+        setFilteredChecks(filteredChecks);
+    };
+    
 
     const MyTable = ({ data, handleDelete }) => (
         <div style={{ maxHeight: "350px", overflowY: "auto" }}>
@@ -102,10 +125,10 @@ const handleDeleteOrder = async (orderId) => {
             <div className="dashb-body">
                 <div className="searchingbar">
                     <div className="searching">
-                        <Form.Control type="text" placeholder="Search" />
+                        <Form.Control type="text" placeholder="Search" onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery} />
                     </div>
                     <div id="searching-btn">
-                        <Button className='submitingbtn' type="submit">Search</Button>
+                        <Button className='submitingbtn' type="submit" onClick={handleSearch}>Search</Button>
                     </div>
                 </div>
 
@@ -113,28 +136,13 @@ const handleDeleteOrder = async (orderId) => {
                     <Tabs variant="pills" defaultActiveKey="home" className="mb-3" fill>
                         <Tab eventKey="home" title="Check Received">
                             <div className='inv-dashing'>
-                                <MyTable data={checks} handleDelete={handleDeleteCheck} />
+                                <MyTable data={filteredChecks} handleDelete={handleDeleteCheck} />
                             </div>
-
-                            <Row className='inv-content2'>
-                                <Col xs={4}><Link to="user/create" id='createbutton'>Create User</Link></Col>
-                                <Col xs={5}>01</Col>
-                                <Col xs={1}>
-                                    <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
-                                </Col>
-                            </Row>
                         </Tab>
                         <Tab eventKey="profile" title="Not Check Received">
                             <div className='inv-dashing'>
-                                <MyTable data={orders} handleDelete={handleDeleteOrder} />
+                                <MyTable data={filteredOrders} handleDelete={handleDeleteOrder} />
                             </div>
-                            <Row className='inv-content2'>
-                                <Col xs={4}>Total : </Col>
-                                <Col xs={5}>01</Col>
-                                <Col xs={1}>
-                                    <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
-                                </Col>
-                            </Row>
                         </Tab>
                     </Tabs>
                 </div>
