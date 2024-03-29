@@ -55,7 +55,7 @@ const fetchChecks = async () => {
                     <Tabs variant="pills" defaultActiveKey="home" className="mb-3" fill>
                         <Tab eventKey="home" title="Received Check List">
                             <div className='inv-dashing'>
-                                <Checkinputbox onDeleteData={fetchChecks} />
+                                <Checkinputbox onDeleteData={handleDeleteCheck} />
                             </div>
                             <Row className='inv-content2'>
                                 <Col xs={4}><Button className='printbtnx'><LocalPrintshopIcon/>&nbsp;&nbsp;Add</Button></Col>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { addDoc, collection, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import { database } from './firebaseConfig';
+import './check';
 
 function Checkinputbox({ onDeleteData }) {
   const [checkNumbers, setCheckNumbers] = useState('');
