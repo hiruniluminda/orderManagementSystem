@@ -96,20 +96,24 @@
     margin-top: 10px;
     padding: 10px;
 }
+#orderBtnview{
+    font-size: 10px;
+}
 .addingmargin{
     margin-left: 20px;
+    margin-bottom: 10px;
     background-color: purple;
     border-radius: 5px;
     color: #fff;
     text-decoration: none;
-    padding: 7px 20px;
+    padding: 7px 15px;
 }
 .addingmarginx{
-    margin-left: 20px;
+    margin-left: 0px;
     color: #fff;
     border-radius: 5px;
     background-color: #b11b1b;
-    padding: 5px 10px;
+    padding: 7px;
 }
 .addingmarginxy{
     margin-right: -100px;
@@ -117,7 +121,15 @@
     color: #fff;
     border-radius: 5px;
     background-color: #b11b1b;
-    padding: 5px 10px;
+    padding: 7px;
+}
+.addingmarginmored{
+    margin-left: 20px;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #2db11b;
+    padding: 7px;
+    font-size: 10px;
 }
 .addingmarginy{
     margin-left: 20px;
@@ -125,12 +137,26 @@
     color: #fff;
     border-radius: 5px;
     background-color: #19ec09;
-    padding: 5px 10px;
+    padding: 7px;
+    margin-top: 10px;
 }
-.addingmarginmore{
+.addingmarginz{
+    margin-left: 20px;
+    margin-right: -100px;
     color: #fff;
     border-radius: 5px;
-    padding: 5px 10px;
+    background-color: #092bec;
+    padding: 7px;
+}
+.addingmarginmore{
+    margin-right: -100px;
+    margin-left: 20px;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #b19d1b;
+    padding: 7px 9px;
+    font-size: 10px;
+    margin-bottom: 10px;
 }
 #createbutton{
     text-decoration: none;
@@ -159,7 +185,7 @@
 }
 #checkinsertbut{
     margin-top: 30px;
-    margin-left: 300px;
+    margin-left: 400px;
     padding: 10px 50px 10px 50px;
     margin-bottom: 120px;
     border-radius: 5px;
@@ -230,37 +256,82 @@
     font-size: 20px;
     color: white;
 }
+.prim{
+    margin-right: -100px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+.dang{
+    margin-left: 110px;
+    margin-right: -100px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+.primer{
+    margin-left: -20px;
+    margin-right: -100px;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #092bec;
+    padding: 5px 10px;
+}
+.dangre{
+    margin-left: 10px;
+    margin-right: -100px;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #ec0909;
+    padding: 5px 10px;
+}
 /**/
 
 @media (width < 1150px) {
     .dashing-section{
-        font-size: 13px;
+        font-size:9px;
     }
     .inv-dashing{
-        font-size: 13px;
+        font-size: 9px;
     }
     .printbtn{
         padding-left: 10px;
         padding-right: 10px;
     }
+    /*order_btn*/
+    .addingmargin{
+        margin-left: 20px;
+        margin-bottom: 10px;
+        padding: 7px 15px;
+    }
+    .addingmarginy{
+        margin-left: 20px;
+        margin-right: -100px;
+        padding: 7px;
+        margin-top: 10px;
+    }
+    .addingmarginz{
+        margin-left: 20px;
+        margin-right: -100px;
+        padding: 7px;
+    }
+    .addingmarginmore{
+        margin-right: -100px;
+        margin-left: 20px;
+        padding: 7px 9px;
+        margin-bottom: 10px;
+    }
   }
   @media (width < 1060px) {
-    .addingmargin{
-        margin-left: 10px;
-        padding: 4px 5px;
-    }
     .addingmarginxy{
+        margin-right: -5px;
+        margin-left: 10px;
+        padding: 3px 2px;
+    }
+    .addingmarginmored{
         margin-right: -5px;
         margin-left: 0px;
         padding: 3px 2px;
-    }
-    .addingmarginmore{
-        padding: 1px 2px;
-    }
-    .addingmarginy{
-        margin-left: 10px;
-        margin-right: -5px;
-        padding: 2px 2px;
     }
     #emailsentbtn{
         padding: 5px 50px 5px 50px;
@@ -278,6 +349,14 @@
     #formemail{
         margin-left: 100px;
     }
+    /*price list btn*/
+    .primer{
+        margin-left: 0px;
+        font-size: 10px;
+    }
+    .dangre{
+        font-size: 10px;
+    }
   }
   @media (width < 1000px) {
     .foot{
@@ -288,49 +367,43 @@
     }
   }
   @media (width < 920px) {
-    .addingmargin{
-        margin-left: 5px;
-        padding: 3px 5px;
+    .prim{
+        padding: 1px;
         font-size: 10px;
     }
-    .addingmarginxy{
-        margin-left: -5px;
-        padding: 2px 1px;
+    .dang{
+        padding: 1px;
         font-size: 10px;
 
     }
-    .addingmarginmore{
-        padding: 1px 1px;
-        font-size: 10px;
+      /*price list btn*/
+      .primer{
+        margin-left: 20px;
+        padding: 5px;
     }
-    .addingmarginy{
-        margin-left:5px;
-        padding: 1px 1px;
-        font-size: 10px;
+    .dangre{
+        padding: 5px;
     }
-   
+    /*check insert*/
+.checkInsertForm{
+    display:block;
+}
+#inv_id{
+    margin-left: 10px;
+    padding: 10px 100px 10px 100px;
+    margin-top: 10px;
+}
+#checkinsertbut{
+    margin-left: 180px;
+}
   }
   @media (width < 700px) {
-    .dashing-section{
-        font-size:9px;
-    }
-    .inv-dashing{
-        font-size: 9px;
-    }
-    .notifications h5{
-        font-size: 9px;
-    }
+    
     /*dashboard button*/
     .addingmargin{
         margin-left: 5px;
         padding: 3px 5px;
         font-size: 8px;
-    }
-    .addingmarginxy{
-        margin-left: -5px;
-        padding: 2px 1px;
-        font-size: 8px;
-
     }
     .addingmarginmore{
         padding: 1px 1px;
@@ -369,29 +442,33 @@
     .dashing-section{
         font-size:12px;
     }
-    .addingmargin{
-        margin-left: 5px;
-        padding: 3px 5px;
-        font-size: 10px;
-    }
-    .addingmarginxy{
-        margin-left: -5px;
-        padding: 2px 1px;
-        font-size: 10px;
-
-    }
-    .addingmarginmore{
-        padding: 1px 1px;
-        font-size: 10px;
-    }
-    .addingmarginy{
-        font-size: 10px;
-    }
     #emailsentbtn{
         padding: 5px 50px 5px 50px;
         margin-left: 30%;
         font-size: 20px;
     }
+          /*price list btn*/
+          .primer{
+            margin-left: 135px;
+        }
+        .dangre{
+            margin-left: 10px;
+            margin-right: -130px;
+        }
+/*check insert*/
+#check-topic{
+    color:#0f097e;
+}
+#checkCont{
+    color: #2453c9;
+}
+#inv_id{
+    margin-left: 10px;
+    padding: 10px 100px 10px 100px;
+}
+#checkinsertbut{
+    margin-left: 150px;
+}
   }
 
   @media (width < 500px) {
@@ -401,21 +478,25 @@
     .printbtn{
         margin-left: -50px;
     }
-    .addingmargin{
-        margin-left: 5px;
-        padding: 3px 5px;
+    /*dash-button*/
+    .prim{
         font-size: 8px;
     }
-    .addingmarginxy{
-        margin-left: -5px;
-        padding: 2px 1px;
+    .dang{
         font-size: 8px;
 
     }
-    .addingmarginmore{
-        padding: 1px 1px;
-        font-size: 8px;
-    }
+              /*price list btn*/
+              .primer{
+                margin-left: 135px;
+                font-size: 10px;
+            }
+            .dangre{
+                margin-left: -7px;
+                margin-right: -130px;
+                padding: 5px;
+                font-size: 10px;
+            }
   }
 
   @media (width < 430px) {
@@ -423,22 +504,34 @@
         font-size:8px;
         font-weight: bolder;
     }
-    .addingmargin{
-        font-size: 6px;
-    }
-    .addingmarginxy{
-        font-size: 6px;
-
-    }
-    .addingmarginmore{
-        font-size: 6px;
-    }
-    .addingmarginy{
-        font-size: 6px;
-    }
     #emailsentbtn{
         padding: 5px 50px 5px 50px;
         margin-left: 18%;
         font-size: 20px;
     }
+        /*dash-button*/
+        .prim{
+            margin-right: -120px;
+        }
+        .dang{
+            margin-left: 125px;
+    
+        }
+             /*price list btn*/
+             .primer{
+                font-size: 9px;
+                padding: 1px;
+
+            }
+            .dangre{
+                padding: 1px;
+                font-size: 9px;
+            }
+    /*check insert*/
+#inv_id{
+    padding: 10px 60px 10px 60px;
+}
+#checkinsertbut{
+    margin-left: 100px;
+}
   }

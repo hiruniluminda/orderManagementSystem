@@ -70,11 +70,14 @@ function Order() {
                             <td>{user.email}</td>
                             <td>{user.mobile}</td>
                             <td>{user.inv_id}</td>
-                            <td>
+                            <td id='orderBtnview'>
                                 <Button className='addingmarginmore' variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
-                                <Link to={`/user/${user.id}/edit`} className='addingmargin' style={{ marginRight: "10px" }}>Edit</Link>
+                                <br/>
+                                <Link to={`/user/${user.id}/edit`} className='addingmargin' style={{ marginRight: "5px" }}>Edit</Link>
+                                <br/>
                                 <button className='addingmarginy' onClick={() => handleDeleteUser(user.id)}>Delete</button>
-                                <button className='' onClick={() => handleAcceptUser(user.id)}>Accept</button>
+                                <br/>
+                                <button className='addingmarginz' onClick={() => handleAcceptUser(user.id)}>Accept</button>
                             </td>
                         </tr>
                     )}

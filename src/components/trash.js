@@ -62,7 +62,7 @@ function Trash() {
                             <td>{row.mobile}</td>
                             <td>{row.inv_id}</td>
                             <td>
-                                <Button className='addingmarginmore' variant="primary" onClick={() => setModalShow(row.inv_id)}>More</Button>
+                                <Button className='addingmarginmored' variant="primary" onClick={() => setModalShow(row.inv_id)}>More</Button>
                                 <button className='addingmarginxy' onClick={() => handleDelete(row.id)}>Delete</button>
                             </td>
                         </tr>

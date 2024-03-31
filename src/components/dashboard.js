@@ -107,9 +107,9 @@ function Dashboard() {
                             <td>{item.email}</td>
                             <td>{item.mobile}</td>
                             <td>{item.inv_id}</td>
-                            <td>
-                                <Button variant="primary" onClick={() => setModalShow(item.inv_id)}>More</Button>
-                                <Button variant="danger" onClick={() => handleDelete(item.id)}>Delete</Button>
+                            <td id='dash-btn-dis'>
+                                <Button className='prim' variant="primary" onClick={() => setModalShow(item.inv_id)}>More</Button>
+                                <Button className='dang' variant="danger" onClick={() => handleDelete(item.id)}>Delete</Button>
                             </td>
                         </tr>
                     ))}

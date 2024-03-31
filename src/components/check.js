@@ -7,6 +7,7 @@ import Checkinputbox from './check_inputbox';
 import { Link } from 'react-router-dom';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { database } from './firebaseConfig';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function Check() {
     const [checks, setChecks] = useState([]);
@@ -58,7 +59,7 @@ const fetchChecks = async () => {
                                 <Checkinputbox onDeleteData={handleDeleteCheck} />
                             </div>
                             <Row className='inv-content2'>
-                                <Col xs={4}><Button className='printbtnx'><LocalPrintshopIcon/>&nbsp;&nbsp;Add</Button></Col>
+                                <Col xs={4}><Button className='printbtnx'><AddBoxIcon />&nbsp;&nbsp;Add</Button></Col>
                                 <Col xs={5}></Col>
                                 <Col xs={1}>
                                 <Button className='printbtn'><LocalPrintshopIcon/>&nbsp;&nbsp;Print</Button>

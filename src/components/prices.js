@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { database } from './firebaseConfig';
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, onSnapshot } from 'firebase/firestore';
 import NavBarCom from './navbarcom';
-import { Col, Row, Form, Button, Tabs, Tab } from "react-bootstrap";
+import { Col, Row, Form, Button, Tabs, Tab, Modal, Table } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
@@ -14,6 +14,7 @@ function FirebaseFirestore() {
     const [id, setId] = useState('');
     const [show, setShow] = useState(false);
     const [items, setItems] = useState([]);
+    const [showCreateModal, setShowCreateModal] = useState(false);
 
     const value = collection(database, 'priceList');
 
@@ -40,6 +41,7 @@ function FirebaseFirestore() {
         setFoodCode('');
         setFoodName('');
         setPrice('');
+        setShowCreateModal(false);
     };
 
     const handleDelete = async (id) => {
@@ -57,7 +59,8 @@ function FirebaseFirestore() {
     const handleUpdate = async () => {
         const updateData = doc(database, 'priceList', id);
         await updateDoc(updateData, {
-            oldPrice: price,
+            foodCode: foodCode,
+            foodName: foodName,
             price: price
         });
         setShow(false);
@@ -88,26 +91,34 @@ function FirebaseFirestore() {
                             <div className='inv-dashing'>
                                 <div className="App">
                                     <div className='container'>
-                                        <input value={foodCode} onChange={(e) => setFoodCode(e.target.value)} />
-                                        <input value={foodName} onChange={(e) => setFoodName(e.target.value)} />
-                                        <input value={price} onChange={(e) => setPrice(e.target.value)} />
-                                        {!show ? <button onClick={handleCreate}>Create</button> :
-                                            <button onClick={handleUpdate}>Update</button>}
-                                        {
-                                            items.map(item =>
-                                                <div key={item.id}>
-                                                    <h1>{item.foodCode}</h1>
-                                                    <h1>{item.foodName}</h1>
-                                                    <h1>{item.price}</h1>
-                                                    <button onClick={() => handleDelete(item.id)}>Delete</button>
-                                                    <button onClick={() => handleEdit(item.id, item.foodCode, item.foodName, item.price)}>Edit</button>
-                                                </div>)
-                                        }
+                                        <Table striped bordered hover>
+                                            <thead>
+                                                <tr>
+                                                    <th>Food Code</th>
+                                                    <th>Food Name</th>
+                                                    <th>Price</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {items.map(item =>
+                                                    <tr key={item.id}>
+                                                        <td>{item.foodCode}</td>
+                                                        <td>{item.foodName}</td>
+                                                        <td>{item.price}</td>
+                                                        <td>
+                                                            <Button className='dangre' onClick={() => handleDelete(item.id)}>Delete</Button>
+                                                            <Button className='primer' onClick={() => handleEdit(item.id, item.foodCode, item.foodName, item.price)}>Edit</Button>
+                                                        </td>
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        </Table>
                                     </div>
                                 </div>
                             </div>
                             <Row className='inv-content2'>
-                                <Col xs={4}><Button className='printbtnx'><AddBoxIcon />&nbsp;&nbsp;Add</Button></Col>
+                                <Col xs={4}><Button className='printbtnx' onClick={() => setShowCreateModal(true)}><AddBoxIcon />&nbsp;&nbsp;Add</Button></Col>
                                 <Col xs={5}></Col>
                                 <Col xs={1}>
                                     <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
@@ -117,8 +128,72 @@ function FirebaseFirestore() {
                     </Tabs>
                 </div>
             </div>
+
+            {/* Create Modal */}
+            <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create New Food Item</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group className="mb-3" controlId="formFoodCode">
+                            <Form.Label>Food Code</Form.Label>
+                            <Form.Control type="text" placeholder="Enter food code" value={foodCode} onChange={(e) => setFoodCode(e.target.value)} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formFoodName">
+                            <Form.Label>Food Name</Form.Label>
+                            <Form.Control type="text" placeholder="Enter food name" value={foodName} onChange={(e) => setFoodName(e.target.value)} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formPrice">
+                            <Form.Label>Price</Form.Label>
+                            <Form.Control type="number" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleCreate}>
+                        Create
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Edit Modal */}
+            <Modal show={show} onHide={() => setShow(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Food Item</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group className="mb-3" controlId="formFoodCode">
+                            <Form.Label>Food Code</Form.Label>
+                            <Form.Control type="text" placeholder="Enter food code" value={foodCode} onChange={(e) => setFoodCode(e.target.value)} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formFoodName">
+                            <Form.Label>Food Name</Form.Label>
+                            <Form.Control type="text" placeholder="Enter food name" value={foodName} onChange={(e) => setFoodName(e.target.value)} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formPrice">
+                            <Form.Label>Price</Form.Label>
+                            <Form.Control type="number" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShow(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleUpdate}>
+                        Update
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }
 
 export default FirebaseFirestore;
+
+
