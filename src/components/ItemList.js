@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { collection, addDoc } from 'firebase/firestore';
+import { database } from './firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 
 function ItemList() {
@@ -14,14 +15,24 @@ function ItemList() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost/api/checkbox/checkbox-db.php', products);
-      // Handle success
+      // each product and add it to the Firestore collection
+      for (const product of products) {
+        await addProductToFirestore(product);
+      }
       alert('Data submitted successfully');
       navigate('/order');
-
     } catch (error) {
-      // Handle error
       console.error('Error submitting data:', error);
+    }
+  };
+
+  // add a single product to Firestore
+  const addProductToFirestore = async (product) => {
+    try {
+      await addDoc(collection(database, 'products'), product);
+    } catch (error) {
+      console.error('Error adding product:', error);
+      throw error;
     }
   };
 

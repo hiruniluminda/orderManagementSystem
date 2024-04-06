@@ -29,11 +29,10 @@ function App() {
         <Route path="/passwordUpdate" element={<PasswordUpdate/>} />
         <Route path="/order/user/create" element={<CreateUser />} />
         <Route path="/itemList" element={<ItemList />} />
-        {/* Update the route for editing user */}
+
         <Route path="/user/:id/edit" element={<EditUser />} />
         <Route path="/check_received/:id/edit" element={<EditNotCheck />} />
 
-        {/* Use dynamic segment :id to capture the user ID */}
         <Route path='/' element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/order" element={<Order />} />
@@ -41,6 +40,7 @@ function App() {
         <Route path="/request" element={<Request />} />
         <Route path="/check" element={<Check />} />
         <Route path="/trash" element={<Trash />} />
+        <Route path="/logout" element={<Login />} />
       </Routes>
     </Router>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,11 +8,9 @@ import Nav from 'react-bootstrap/Nav';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Pro from "../img/pro.jpg";
-import Worldball from "../img/world-ball.png";
 import Image from 'react-bootstrap/Image';
 import { Button } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import Alert from 'react-bootstrap/Alert';
 import Notifications from './notifications';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -31,17 +29,17 @@ function NavBarCom() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    /*notification useStates */
     const [showNoti, setShowNoti] = useState(false);
     const handleCloseNoti = () => setShowNoti(false);
     const handleShowNoti = () => setShowNoti(true);
 
+    const handleSearch = () => {
+        console.log('Search functionality will be implemented here');
+    };
+
     return (
         <div className='backgroundmain'>
-            
-
             <Offcanvas show={show} onHide={handleClose} placement="start" className="mobcolor">
-                
                 <Offcanvas.Body>
                     <Nav variant="pills" activeKey={activeKey} onSelect={handleNavSelect}>
                         <Nav.Item className='navitem'>
@@ -69,15 +67,13 @@ function NavBarCom() {
                 </Offcanvas.Body>
             </Offcanvas>
 
-{/*notifications */}
+            {/* Notifications */}
             <Offcanvas show={showNoti} onHide={handleCloseNoti} placement="end" className="mobcolor">
-                
                 <Offcanvas.Body>
                     <div>
-                            <h5 id='noti-head'>Notification</h5>
-                            <p className='navlink' id='noti-sec'><Notifications/></p>
-
-                        </div>
+                        <h5 id='noti-head'>Notification</h5>
+                        <p className='navlink' id='noti-sec'><Notifications /></p>
+                    </div>
                 </Offcanvas.Body>
             </Offcanvas>
 
@@ -85,10 +81,10 @@ function NavBarCom() {
                 <Row fluid className="rowsize1">
                     <Col fluid className="rowcolor">
                         <div className='header'>
-                        <p className="d-lg-none" onClick={handleShow}><MenuIcon id="menubutton"/></p>
+                            <p className="d-lg-none" onClick={handleShow}><MenuIcon id="menubutton" /></p>
                             <Image id='profile-img' src={Pro} roundedCircle />
                             <h3 id='header-name'>Name.PVT(Ltd.)</h3>
-                       <p className="d-lg-none" onClick={handleShowNoti}><CircleNotificationsIcon id="notiButton"/></p>
+                            <p className="d-lg-none" onClick={handleShowNoti}><CircleNotificationsIcon id="notiButton" /></p>
                         </div>
                     </Col>
                 </Row>
@@ -122,8 +118,7 @@ function NavBarCom() {
                     <Col fluid xs={2} className='noti-col'>
                         <div>
                             <h5 id='noti-head'>Notification</h5>
-                            <p id='noti-sec'><Notifications/></p>
-
+                            <p id='noti-sec'><Notifications /></p>
                         </div>
                     </Col>
                 </Row>

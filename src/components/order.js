@@ -1,123 +1,65 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import NavBarCom from './navbarcom';
-import { Col, Container, Row } from "react-bootstrap";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Navbar from 'react-bootstrap/Navbar';
-import "./dashboard.css";
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
+import { Col, Row, Form, Button, Tabs, Tab } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AddToHomeScreenIcon from '@mui/icons-material/AddToHomeScreen';
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
-import axios from "axios";
 import MyVerticallyCenteredModal from './show';
+import { collection, getDocs, deleteDoc, doc, addDoc, getDoc } from 'firebase/firestore';
+import { database } from './firebaseConfig';
+import { useReactToPrint } from 'react-to-print';
 
-/*users and orders details input section */
 function Order() {
     const [modalShow, setModalShow] = useState(false);
     const [users, setUsers] = useState([]);
+    const componentPDF = useRef();
 
     useEffect(() => {
-        getUsers();
+        fetchUsers();
     }, []);
 
-    function getUsers() {
-        axios.get('http://localhost/api/users/').then(response => {
-                console.log(response.data);
-                setUsers(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-            });
-    }
-    const deleteUser = (id) => {
-        axios.delete(`http://localhost/api/user/${id}/delete`).then(function(response){
-            console.log(response.data);
-            getUsers();
-        });
-    }
-
-    /**//*
-    const [orders, setOrders] = useState([]);
-    const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
-  
-    useEffect(() => {
-      fetchOrders();
-    }, []);
-  
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch('http://localhost/api/order/transfer1.php');
-        const data = await response.json();
-        setOrders(data);
-      } catch (error) {
-        setError('Error occurred while fetching orders.');
-      }
-    };*/
-  
-    const handleAcceptOrder = async (orderId) => {
-      try {
-        const response = await fetch('http://localhost/api/order/transfer1.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            accept_button: 'true',
-            order_id: orderId,
-          }),
-        });            getUsers();
-        /*
-        const data = await response.json();
-        if (data.error) {
-          setError(data.error);
-          setMessage('');
-        } else {
-          setMessage(data.message);
-          setError('');
-          fetchOrders(); // Refresh orders after accepting
-        }*/
-      } catch (error) {
-      }
+    const fetchUsers = async () => {
+        const usersCollection = collection(database, 'users');
+        const usersSnapshot = await getDocs(usersCollection);
+        const usersData = usersSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        setUsers(usersData);
     };
-/* */
-const handleDeleteOrder = async (orderId) => {
-    try {
-      const response = await fetch('http://localhost/api/delete/deleteOrders.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          accept_button: 'true',
-          order_id: orderId,
-        }),
-      });            getUsers();
-      /*
-      const data = await response.json();
-      if (data.error) {
-        setError(data.error);
-        setMessage('');
-      } else {
-        setMessage(data.message);
-        setError('');
-        fetchOrders(); // Refresh orders after accepting
-      }*/
-    } catch (error) {
-    }
-  };
-    /* */
+    
+    const handleDeleteUser = async (userId) => {
+        const userDocRef = doc(database, 'users', userId);
+        const userSnapshot = await getDoc(userDocRef);
+        if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+            await addDoc(collection(database, 'trash'), userData);
+            await deleteDoc(userDocRef);
+            fetchUsers();
+        }
+    };
+
+    const handleAcceptUser = async (userId) => {
+        const userDocRef = doc(database, 'users', userId);
+        const userSnapshot = await getDoc(userDocRef);
+        if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+            await addDoc(collection(database, 'orders'), userData);
+            await deleteDoc(userDocRef);
+            fetchUsers();
+        }
+    };
+    
+    const generatePDF = useReactToPrint({
+        content: ()=>componentPDF.current,
+        documentTitle:"Price List"
+    });
 
     const MyTable = () => (
-        <div style={{maxHeight: "350px", overflowY: "auto"}}> 
-            
-            <Table striped bordered hover variant="dark"> 
-                <thead style={{position: "sticky", top: "0", backgroundColor: "#22f0f0" }}> 
+        <div style={{ maxHeight: "350px", overflowY: "auto" }}>
+            <div ref={componentPDF} style={{width:'100%'}}>
+            <Table striped bordered hover variant="dark">
+                <thead style={{ position: "sticky", top: "0", backgroundColor: "#22f0f0" }}>
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
@@ -125,7 +67,6 @@ const handleDeleteOrder = async (orderId) => {
                         <th>Mobile</th>
                         <th>invoice_id</th>
                         <th>Data Handling Options</th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -136,21 +77,22 @@ const handleDeleteOrder = async (orderId) => {
                             <td>{user.email}</td>
                             <td>{user.mobile}</td>
                             <td>{user.inv_id}</td>
-                            <td>
+                            <td id='orderBtnview'>
                                 <Button className='addingmarginmore' variant="primary" onClick={() => setModalShow(user.inv_id)}>More</Button>
-                                <Link to={`/user/${user.id}/edit`} className='addingmargin' style={{marginRight: "10px"}}>Edit</Link>
-                                <button className='addingmarginxy' onClick={() => handleDeleteOrder(user.inv_id)}>Delete</button>
-                                <button className='addingmarginy' onClick={() => handleAcceptOrder(user.inv_id)}>Accept</button>
-
+                                <br/>
+                                <Link to={`/user/${user.id}/edit`} className='addingmargin' style={{ marginRight: "5px" }}>Edit</Link>
+                                <br/>
+                                <button className='addingmarginy' onClick={() => handleDeleteUser(user.id)}>Delete</button>
+                                <br/>
+                                <button className='addingmarginz' onClick={() => handleAcceptUser(user.id)}>Accept</button>
                             </td>
                         </tr>
                     )}
                 </tbody>
-
-            </Table> 
+            </Table>
+            </div>
             <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} inv_id={modalShow} />
-
-        </div> 
+        </div>
     );
 
     return (
@@ -177,9 +119,9 @@ const handleDeleteOrder = async (orderId) => {
                             </div>
                             <Row className='inv-content2'>
                                 <Col xs={4}><Link to="user/create" id='createbutton'>Create User</Link></Col>
-                                <Col xs={5}>01</Col>
+                                <Col xs={5}></Col>
                                 <Col xs={1}>
-                                    <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
+                                    <Button className='printbtn' onClick={generatePDF}><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
                                 </Col>
                             </Row>
                         </Tab>

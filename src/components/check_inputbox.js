@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { addDoc, collection, deleteDoc, doc, getDoc } from 'firebase/firestore';
+import { database } from './firebaseConfig';
 
 function Checkinputbox() {
   const [checkNumbers, setCheckNumbers] = useState('');
@@ -7,38 +9,48 @@ function Checkinputbox() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost/api/notcheckToCheck/check.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ inv_id: checkNumbers }),
-      });
-      const data = await response.json();
-      setMessage(data.message);
+      const numbersArray = checkNumbers.split(',').map(num => num.trim());
+  
+      await Promise.all(
+        numbersArray.map(async (num) => {
+          const orderDocRef = doc(database, 'orders', num);
+          const orderSnapshot = await getDoc(orderDocRef);
+  
+          if (orderSnapshot.exists()) {
+            const orderData = orderSnapshot.data();
+            await addDoc(collection(database, 'checks'), { ...orderData, id: num, received: true });
+            setMessage(`Check with ID ${num} added successfully.`);
+            await deleteDoc(orderDocRef);
+          } else {
+            setMessage(`Order with ID ${num} does not exist.`);
+          }
+        })
+      );
+  
     } catch (error) {
-      console.error('Error:', error);
       setMessage('An error occurred while processing your request.');
+      console.error(error);
     }
   };
+  
 
   return (
     <div>
       <h2 id='check-topic'>Insert Check Received</h2>
       <form onSubmit={handleSubmit}>
         <div className='checkInsertForm'>
-        <label id='checkCont' htmlFor="inv_id">Check Numbers (comma-separated):</label><br />
-        <input
-          type="text"
-          id="inv_id"
-          name="inv_id"
-          value={checkNumbers}
-          onChange={(e) => setCheckNumbers(e.target.value)}
-        /><br /><br />
+          <label id='checkCont' htmlFor="inv_id">Check Numbers (comma-separated):</label><br />
+          <input
+            type="text"
+            id="id"
+            name="id"
+            value={checkNumbers}
+            onChange={(e) => setCheckNumbers(e.target.value)}
+          /><br /><br />
         </div>
         <input id='checkinsertbut' type="submit" value="Submit" />
       </form>
-      {message && <p>{message}</p>}
+      {message && <p style={{ color: "white" }}>{message}</p>}
     </div>
   );
 }

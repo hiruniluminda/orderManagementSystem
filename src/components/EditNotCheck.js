@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+/* import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-/*edit user details in order section*/
 export default function EditNotCheck() {
     const navigate = useNavigate();
 
@@ -75,3 +74,4 @@ export default function EditNotCheck() {
         </div>
     )
 }
+*/

@@ -1,38 +1,52 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { database } from "./firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
 export default function ListUser() {
     const navigate = useNavigate();
-
-    const [inputs, setInputs] = useState([]);
+    const [inputs, setInputs] = useState({
+        inv_id: "",
+        name: "",
+        email: "",
+        mobile: ""
+    });
 
     const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values => ({...values, [name]: value}));
-    }
-    const handleSubmit = (event) => {
-        event.preventDefault();
+        const { name, value } = event.target;
+        setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
+    };
 
-        axios.post('http://localhost/api/user/save', inputs).then(function(response){
-            console.log(response.data);
-            navigate('/itemList');
-        });
-        
-    }
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+    
+        try {
+            // Add user data to Firestore collection
+            await addDoc(collection(database, "users"), { ...inputs, timestamp: serverTimestamp() });
+            console.log("User created successfully!");
+            navigate("/itemList");
+        } catch (error) {
+            console.error("Error creating user:", error);
+        }
+    };
+    
     return (
         <div>
             <h1>Create user</h1>
             <form onSubmit={handleSubmit}>
                 <table cellSpacing="10">
                     <tbody>
-                    <tr>
+                        <tr>
                             <th>
-                                <label>invoice_id: </label>
+                                <label>Invoice ID: </label>
                             </th>
                             <td>
-                                <input type="text" name="inv_id" onChange={handleChange} />
+                                <input
+                                    type="text"
+                                    name="inv_id"
+                                    value={inputs.inv_id}
+                                    onChange={handleChange}
+                                />
                             </td>
                         </tr>
                         <tr>
@@ -40,15 +54,25 @@ export default function ListUser() {
                                 <label>Name: </label>
                             </th>
                             <td>
-                                <input type="text" name="name" onChange={handleChange} />
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={inputs.name}
+                                    onChange={handleChange}
+                                />
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 <label>Email: </label>
                             </th>
-                            <td> 
-                                <input type="text" name="email" onChange={handleChange} />
+                            <td>
+                                <input
+                                    type="text"
+                                    name="email"
+                                    value={inputs.email}
+                                    onChange={handleChange}
+                                />
                             </td>
                         </tr>
                         <tr>
@@ -56,11 +80,16 @@ export default function ListUser() {
                                 <label>Mobile: </label>
                             </th>
                             <td>
-                                <input type="text" name="mobile" onChange={handleChange} />
+                                <input
+                                    type="text"
+                                    name="mobile"
+                                    value={inputs.mobile}
+                                    onChange={handleChange}
+                                />
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan="2" align ="right">
+                            <td colSpan="2" align="right">
                                 <button>Save</button>
                             </td>
                         </tr>
@@ -68,5 +97,5 @@ export default function ListUser() {
                 </table>
             </form>
         </div>
-    )
+    );
 }

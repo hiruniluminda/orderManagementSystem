@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios";
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { database } from './firebaseConfig';
 
 export default function MyVerticallyCenteredModal(props) {
     const [products, setProducts] = useState([]);
@@ -13,16 +14,19 @@ export default function MyVerticallyCenteredModal(props) {
         }
     }, [props.inv_id]);
 
-    function getProducts(inv_id) {
-        axios.get(`http://localhost/api/checkbox/checkbox-db.php?inv_id=${inv_id}`)
-            .then(response => {
-                console.log(response.data);
-                setProducts(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching products:', error);
+    const getProducts = async (inv_id) => {
+        try {
+            const q = query(collection(database, 'products'), where('inv_id', '==', inv_id));
+            const querySnapshot = await getDocs(q);
+            const productsData = [];
+            querySnapshot.forEach((doc) => {
+                productsData.push({ ...doc.data(), id: doc.id });
             });
-    }
+            setProducts(productsData);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
 
     return (
         <Modal
@@ -52,10 +56,10 @@ export default function MyVerticallyCenteredModal(props) {
                         <tbody>
                             {products.map((product, key) =>
                                 <tr key={key}>
-                                    <td>{product.product_id}</td>
-                                    <td>{product.product_name}</td>
-                                    <td>{product.product_price}</td>
-                                    <td>{product.product_quantity}</td>
+                                    <td>{product.id}</td>
+                                    <td>{product.name}</td>
+                                    <td>{product.price}</td>
+                                    <td>{product.quantity}</td>
                                     <td>{product.inv_id}</td>
                                 </tr>
                             )}
