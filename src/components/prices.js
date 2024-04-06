@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { database } from './firebaseConfig';
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, onSnapshot } from 'firebase/firestore';
 import NavBarCom from './navbarcom';
@@ -6,6 +6,7 @@ import { Col, Row, Form, Button, Tabs, Tab, Modal, Table } from "react-bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
+import { useReactToPrint } from 'react-to-print';
 
 function FirebaseFirestore() {
     const [foodCode, setFoodCode] = useState('');
@@ -18,6 +19,8 @@ function FirebaseFirestore() {
 
     const value = collection(database, 'priceList');
 
+    const componentPDF = useRef();
+
     useEffect(() => {
         const fetchData = async () => {
             const snapshot = await getDocs(value);
@@ -26,13 +29,11 @@ function FirebaseFirestore() {
         };
         fetchData();
 
-        // Listen for real-time updates
         const unsubscribe = onSnapshot(value, (snapshot) => {
             const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
             setItems(data);
         });
 
-        // Unsubscribe from real-time updates when component unmounts
         return () => unsubscribe();
     }, []);
 
@@ -69,6 +70,11 @@ function FirebaseFirestore() {
         setPrice('');
     };
 
+    const generatePDF = useReactToPrint({
+        content: ()=>componentPDF.current,
+        documentTitle:"Price List"
+    });
+
     return (
         <>
             <NavBarCom />
@@ -91,6 +97,7 @@ function FirebaseFirestore() {
                             <div className='inv-dashing'>
                                 <div className="App">
                                     <div className='container'>
+                                        <div ref={componentPDF} style={{width:'100%'}}>
                                         <Table striped bordered hover>
                                             <thead>
                                                 <tr>
@@ -114,6 +121,7 @@ function FirebaseFirestore() {
                                                 )}
                                             </tbody>
                                         </Table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +129,7 @@ function FirebaseFirestore() {
                                 <Col xs={4}><Button className='printbtnx' onClick={() => setShowCreateModal(true)}><AddBoxIcon />&nbsp;&nbsp;Add</Button></Col>
                                 <Col xs={5}></Col>
                                 <Col xs={1}>
-                                    <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
+                                    <Button className='printbtn' onClick={generatePDF}><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
                                 </Col>
                             </Row>
                         </Tab>

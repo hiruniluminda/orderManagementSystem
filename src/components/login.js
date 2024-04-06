@@ -22,12 +22,9 @@ function Login() {
     .then((userCredential) => {
     // Signed up
     navigate("/dashboard");
-    //console.log(userCredential);
-    // ...
   })
   .catch((error) => {
     console.log(error);
-    // ..
   });
 
   }

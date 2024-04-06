@@ -34,7 +34,7 @@ function Trash() {
         try {
             const userDocRef = doc(database, 'trash', userId);
             await deleteDoc(userDocRef);
-            fetchUsers(); // Refresh
+            fetchUsers();
         } catch (error) {
             console.error("Error deleting user:", error);
         }
@@ -94,13 +94,6 @@ function Trash() {
                             <div className='inv-dashing'>
                                 <MyTable />
                             </div>
-                            <Row className='inv-content2'>
-                                <Col xs={4}><Button className='printbtnx'><AddBoxIcon />&nbsp;&nbsp;Add</Button></Col>
-                                <Col xs={5}></Col>
-                                <Col xs={1}>
-                                    <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
-                                </Col>
-                            </Row>
                         </Tab>
                     </Tabs>
                 </div>

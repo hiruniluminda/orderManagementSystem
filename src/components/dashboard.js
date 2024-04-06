@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import NavBarCom from './navbarcom';
-import { Col, Row, Form, Button, Tabs, Tab } from "react-bootstrap";
+import { Form, Button, Tabs, Tab, Row, Col } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import MyVerticallyCenteredModal from './show';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { database } from './firebaseConfig';
-import { Link } from 'react-router-dom';
 import { addDoc, getDoc } from 'firebase/firestore';
-import Checkinputbox from './check_inputbox';
+import { useReactToPrint } from 'react-to-print';
+import { Link } from 'react-router-dom';
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
 function Dashboard() {
     const [modalShow, setModalShow] = useState(false);
@@ -17,6 +17,7 @@ function Dashboard() {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredOrders, setFilteredOrders] = useState([]);
     const [filteredChecks, setFilteredChecks] = useState([]);
+    const componentPDF = useRef();
 
     useEffect(() => {
         fetchOrders();
@@ -68,23 +69,26 @@ function Dashboard() {
     };
 
     const handleSearch = () => {
-        // Filter orders based on search query
+        // Filter orders
         const filteredOrders = orders.filter(order =>
             (order.name && order.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
             (order.email && order.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
             (order.mobile && order.mobile.includes(searchQuery))
         );
     
-        // Filter checks based on search query
+        // Filter checks
         const filteredChecks = checks.filter(check =>
-            // Assuming you have similar fields in your check data
             (check.some_field && check.some_field.toLowerCase().includes(searchQuery.toLowerCase()))
         );
     
         setFilteredOrders(filteredOrders);
         setFilteredChecks(filteredChecks);
     };
-    
+
+    const generatePDF = useReactToPrint({
+        content: ()=>componentPDF.current,
+        documentTitle:"Price List"
+    });
 
     const MyTable = ({ data, handleDelete }) => (
         <div style={{ maxHeight: "350px", overflowY: "auto" }}>
@@ -115,7 +119,7 @@ function Dashboard() {
                     ))}
                 </tbody>
             </table>
-            <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} inv_id={modalShow} />
+            <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} inv_id={modalShow} />{/*component call for show more data as pop up box when click more */}
         </div>
     );
 
@@ -136,13 +140,31 @@ function Dashboard() {
                     <Tabs variant="pills" defaultActiveKey="home" className="mb-3" fill>
                         <Tab eventKey="home" title="Check Received">
                             <div className='inv-dashing'>
+                            <div ref={componentPDF} style={{width:'100%'}}>
                                 <MyTable data={filteredChecks} handleDelete={handleDeleteCheck} />
+                                </div>
                             </div>
+                            <Row className='inv-content2'>
+                                <Col xs={4}></Col>
+                                <Col xs={5}></Col>
+                                <Col xs={1}>
+                                    <Button className='printbtn' onClick={generatePDF}><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
+                                </Col>
+                            </Row>
                         </Tab>
                         <Tab eventKey="profile" title="Not Check Received">
                             <div className='inv-dashing'>
+                            <div ref={componentPDF} style={{width:'100%'}}>
                                 <MyTable data={filteredOrders} handleDelete={handleDeleteOrder} />
                             </div>
+                            </div>
+                            <Row className='inv-content2'>
+                                <Col xs={4}></Col>
+                                <Col xs={5}></Col>
+                                <Col xs={1}>
+                                    <Button className='printbtn' onClick={generatePDF}><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
+                                </Col>
+                            </Row>
                         </Tab>
                     </Tabs>
                 </div>

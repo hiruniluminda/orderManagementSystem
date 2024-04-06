@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { addDoc, collection, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import { database } from './firebaseConfig';
-import './check';
 
-
-function Checkinputbox({ onDeleteData }) {
+function Checkinputbox() {
   const [checkNumbers, setCheckNumbers] = useState('');
   const [message, setMessage] = useState('');
 
@@ -12,35 +10,29 @@ function Checkinputbox({ onDeleteData }) {
     e.preventDefault();
     try {
       const numbersArray = checkNumbers.split(',').map(num => num.trim());
-
-      const batch = numbersArray.map(num => ({
-        inv_id: num,
-        received: true
-      }));
-      await Promise.all(batch.map(data => addDoc(collection(database, 'checks'), data)));
-
-      setMessage('Check numbers added successfully.');
-
-      // Move data from Not Check Received to Check Received section
+  
       await Promise.all(
         numbersArray.map(async (num) => {
           const orderDocRef = doc(database, 'orders', num);
           const orderSnapshot = await getDoc(orderDocRef);
+  
           if (orderSnapshot.exists()) {
             const orderData = orderSnapshot.data();
-            await addDoc(collection(database, 'checks'), { ...orderData, received: true });
+            await addDoc(collection(database, 'checks'), { ...orderData, id: num, received: true });
+            setMessage(`Check with ID ${num} added successfully.`);
             await deleteDoc(orderDocRef);
+          } else {
+            setMessage(`Order with ID ${num} does not exist.`);
           }
         })
       );
-
-      // Trigger the callback function to delete data
-
+  
     } catch (error) {
-      console.error('Error:', error);
       setMessage('An error occurred while processing your request.');
+      console.error(error);
     }
   };
+  
 
   return (
     <div>
@@ -50,15 +42,15 @@ function Checkinputbox({ onDeleteData }) {
           <label id='checkCont' htmlFor="inv_id">Check Numbers (comma-separated):</label><br />
           <input
             type="text"
-            id="inv_id"
-            name="inv_id"
+            id="id"
+            name="id"
             value={checkNumbers}
             onChange={(e) => setCheckNumbers(e.target.value)}
           /><br /><br />
         </div>
         <input id='checkinsertbut' type="submit" value="Submit" />
       </form>
-      {message && <p>{message}</p>}
+      {message && <p style={{ color: "white" }}>{message}</p>}
     </div>
   );
 }

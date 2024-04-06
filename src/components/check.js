@@ -1,31 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBarCom from './navbarcom';
-import { Col, Row, Form, Button, Tabs, Tab } from "react-bootstrap";
+import { Form, Button, Tabs, Tab } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import Checkinputbox from './check_inputbox';
-import { Link } from 'react-router-dom';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, addDoc } from 'firebase/firestore';
 import { database } from './firebaseConfig';
-import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function Check() {
     const [checks, setChecks] = useState([]);
 
-    // Other code remains unchanged
+    useEffect(() => {
+        fetchChecks();
+    }, []);
 
-const fetchChecks = async () => {
-    try {
-        const querySnapshot = await getDocs(collection(database, 'checks'));
-        const checksData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        setChecks(checksData);
-    } catch (error) {
-        console.error('Error fetching checks:', error);
-    }
-};
-
-// Other code remains unchanged
-
+    const fetchChecks = async () => {
+        try {
+            const querySnapshot = await getDocs(collection(database, 'checks'));
+            const checksData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+            setChecks(checksData);
+        } catch (error) {
+            console.error('Error fetching checks:', error);
+        }
+    };
 
     const handleDeleteCheck = async (checkId) => {
         try {
@@ -36,16 +32,29 @@ const fetchChecks = async () => {
         }
     };
 
+    const handleAddCheck = async (orderSnapshot, num) => {
+        try {
+            if (orderSnapshot.exists()) {
+                const orderData = orderSnapshot.data();
+                await addDoc(collection(database, 'checks'), { ...orderData, inv_id: num, received: true });
+                fetchChecks();
+                return `Check with ID ${num} added successfully.`;
+            } else {
+                return `Order with ID ${num} does not exist.`;
+            }
+        } catch (error) {
+            console.error('Error adding check:', error);
+            return 'An error occurred while processing your request.';
+        }
+    };
+
     return (
         <>
             <NavBarCom />
             <div className="dashb-body">
                 <div className="searchingbar">
                     <div className="searching">
-                        <Form.Control
-                            type="text"
-                            placeholder="Search"
-                        />
+                        <Form.Control type="text" placeholder="Search" />
                     </div>
                     <div id="searching-btn">
                         <Button className='submitingbtn' type="submit">Search</Button>
@@ -56,15 +65,8 @@ const fetchChecks = async () => {
                     <Tabs variant="pills" defaultActiveKey="home" className="mb-3" fill>
                         <Tab eventKey="home" title="Received Check List">
                             <div className='inv-dashing'>
-                                <Checkinputbox onDeleteData={handleDeleteCheck} />
+                                <Checkinputbox onAddCheck={handleAddCheck} onDeleteCheck={handleDeleteCheck} />
                             </div>
-                            <Row className='inv-content2'>
-                                <Col xs={4}><Button className='printbtnx'><AddBoxIcon />&nbsp;&nbsp;Add</Button></Col>
-                                <Col xs={5}></Col>
-                                <Col xs={1}>
-                                <Button className='printbtn'><LocalPrintshopIcon/>&nbsp;&nbsp;Print</Button>
-                                </Col>
-                            </Row>
                         </Tab>
                     </Tabs>
                 </div>

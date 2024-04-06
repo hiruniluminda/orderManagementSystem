@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import NavBarCom from './navbarcom';
 import { Col, Row, Form, Button, Tabs, Tab } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,10 +10,12 @@ import Table from 'react-bootstrap/Table';
 import MyVerticallyCenteredModal from './show';
 import { collection, getDocs, deleteDoc, doc, addDoc, getDoc } from 'firebase/firestore';
 import { database } from './firebaseConfig';
+import { useReactToPrint } from 'react-to-print';
 
 function Order() {
     const [modalShow, setModalShow] = useState(false);
     const [users, setUsers] = useState([]);
+    const componentPDF = useRef();
 
     useEffect(() => {
         fetchUsers();
@@ -48,9 +50,14 @@ function Order() {
         }
     };
     
+    const generatePDF = useReactToPrint({
+        content: ()=>componentPDF.current,
+        documentTitle:"Price List"
+    });
 
     const MyTable = () => (
         <div style={{ maxHeight: "350px", overflowY: "auto" }}>
+            <div ref={componentPDF} style={{width:'100%'}}>
             <Table striped bordered hover variant="dark">
                 <thead style={{ position: "sticky", top: "0", backgroundColor: "#22f0f0" }}>
                     <tr>
@@ -83,6 +90,7 @@ function Order() {
                     )}
                 </tbody>
             </Table>
+            </div>
             <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} inv_id={modalShow} />
         </div>
     );
@@ -111,9 +119,9 @@ function Order() {
                             </div>
                             <Row className='inv-content2'>
                                 <Col xs={4}><Link to="user/create" id='createbutton'>Create User</Link></Col>
-                                <Col xs={5}>01</Col>
+                                <Col xs={5}></Col>
                                 <Col xs={1}>
-                                    <Button className='printbtn'><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
+                                    <Button className='printbtn' onClick={generatePDF}><LocalPrintshopIcon />&nbsp;&nbsp;Print</Button>
                                 </Col>
                             </Row>
                         </Tab>

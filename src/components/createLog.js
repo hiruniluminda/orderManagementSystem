@@ -22,14 +22,10 @@ function CreateLog() {
   .then((userCredential) => {
     // Signed up 
     navigate("/login");
-    //console.log(userCredential);
-    // ...
   })
   .catch((error) => {
     console.log(error);
-    // ..
   });
-
   }
 
   return (

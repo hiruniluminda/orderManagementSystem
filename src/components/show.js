@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { database } from './firebaseConfig'; // Update the import statement to use 'firestore' from firebaseConfig
+import { database } from './firebaseConfig';
 
 export default function MyVerticallyCenteredModal(props) {
     const [products, setProducts] = useState([]);

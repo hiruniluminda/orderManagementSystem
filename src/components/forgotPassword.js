@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import password from '../assets/password.png';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import "./login.css";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from './firebaseConfig';
 

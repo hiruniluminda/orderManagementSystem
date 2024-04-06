@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
-import { database } from './firebaseConfig'; // Update the import statement to use 'firestore' from firebaseConfig
+import { database } from './firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 
 function ItemList() {
@@ -15,26 +15,24 @@ function ItemList() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Loop through each product and add it to the Firestore collection
+      // each product and add it to the Firestore collection
       for (const product of products) {
         await addProductToFirestore(product);
       }
-      // Handle success
       alert('Data submitted successfully');
       navigate('/order');
     } catch (error) {
-      // Handle error
       console.error('Error submitting data:', error);
     }
   };
 
-  // Function to add a single product to Firestore
+  // add a single product to Firestore
   const addProductToFirestore = async (product) => {
     try {
       await addDoc(collection(database, 'products'), product);
     } catch (error) {
       console.error('Error adding product:', error);
-      throw error; // Re-throw the error to be caught in the handleSubmit function
+      throw error;
     }
   };
 

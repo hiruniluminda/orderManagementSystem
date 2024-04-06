@@ -35,14 +35,13 @@ function Notification() {
         users.forEach(user => {
             const createdAtTimestamp = user.created_at;
             if (createdAtTimestamp instanceof Date) {
-                // Skip if already a Date object
                 return;
             }
             if (!createdAtTimestamp || !createdAtTimestamp.toDate) {
                 console.error("Invalid created_at timestamp:", createdAtTimestamp);
                 return;
             }
-            const createdAtDate = createdAtTimestamp.toDate(); // Convert Firestore timestamp to JavaScript Date object
+            const createdAtDate = createdAtTimestamp.toDate();
             const timeDiff = currentDate.getTime() - createdAtDate.getTime();
             const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
     

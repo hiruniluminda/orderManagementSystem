@@ -29,13 +29,11 @@ function NavBarCom() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    /*notification useStates */
     const [showNoti, setShowNoti] = useState(false);
     const handleCloseNoti = () => setShowNoti(false);
     const handleShowNoti = () => setShowNoti(true);
 
     const handleSearch = () => {
-        // Add search functionality here
         console.log('Search functionality will be implemented here');
     };
 
