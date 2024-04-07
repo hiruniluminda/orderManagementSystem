@@ -25,4 +25,5 @@ this web app provide order management facilities. Below mentioned that functiona
 Used techniques:
 
 frontend: React.js, Bootstrap, CSS, HTML
+
 backend: firebase
